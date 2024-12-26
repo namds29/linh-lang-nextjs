@@ -35,7 +35,7 @@ export default function RootLayout ({
           <Header />
           <div className=' h-[calc(100vh-56px)] w-full flex'>
            <Sidebar />
-            <section id='main-content' className='w-full p-4'>
+            <section id='main-content' className='w-full px-8 py-4'>
               {children}
             </section>
           </div>
