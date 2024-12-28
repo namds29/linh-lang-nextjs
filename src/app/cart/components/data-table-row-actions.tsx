@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { Row } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
+import { Row, Table } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -15,22 +15,31 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
-import { labels } from "../mock/label"
-import { Task } from "../mock/types"
-import { Button } from "@/components/ui/button"
-
+import { labels } from "../mock/label";
+import { Task } from "../mock/types";
+import { Button } from "@/components/ui/button";
 
 interface DataTableRowActionsProps<TData> {
-  row: Row<TData>
+  row: Row<TData>;
+  table: Table<TData>;
 }
 
 export function DataTableRowActions<TData>({
   row,
+  table,
 }: DataTableRowActionsProps<TData>) {
-  const task = row.original as Task
-
+  const task = row.original as Task;
+  const handleDeleteRow = () => {
+    // console.log(table.getCoreRowModel().rows[0]);
+    // console.log(task);
+    
+    //  table.getCoreRowModel().rows.filter((item) => {
+    //   return (item.original as Task).id !== task.id;
+    // });
+    // console.log(data);
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -60,11 +69,11 @@ export function DataTableRowActions<TData>({
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleDeleteRow()}>
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
