@@ -1,0 +1,282 @@
+[
+  {
+    "id": "p-1",
+    "name": "Đồ chơi lắp ghép mô hình siêu xe tĩnh - Sembo Famous Starless Dome",
+    "inventory": "0 trong 3 biến thể",
+    "category": "Đồ chơi gỗ",
+    "provider": "Atachoi"
+  },
+  {
+    "id": "p-2",
+    "name": "Bộ xếp hình 1000 mảnh - Thành phố cổ tích",
+    "inventory": "2 trong 5 biến thể",
+    "category": "Đồ chơi lắp ráp",
+    "provider": "ToyLand"
+  },
+  {
+    "id": "p-3",
+    "name": "Mô hình xe hơi thể thao - Ferrari F8",
+    "inventory": "5 trong 5 biến thể",
+    "category": "Đồ chơi mô hình",
+    "provider": "CarZone"
+  },
+  {
+    "id": "p-4",
+    "name": "Bộ đồ chơi nhà bếp - MasterChef",
+    "inventory": "3 trong 3 biến thể",
+    "category": "Đồ chơi giả lập",
+    "provider": "HappyKids"
+  },
+  {
+    "id": "p-5",
+    "name": "Đồ chơi xếp hình động vật - Farm Friends",
+    "inventory": "1 trong 4 biến thể",
+    "category": "Đồ chơi giáo dục",
+    "provider": "EduToys"
+  },
+  {
+    "id": "p-6",
+    "name": "Mô hình tàu hỏa - Classic Train Set",
+    "inventory": "4 trong 4 biến thể",
+    "category": "Đồ chơi mô hình",
+    "provider": "RailwayWorld"
+  },
+  {
+    "id": "p-7",
+    "name": "Bộ xếp hình thành phố - Urban Blocks",
+    "inventory": "0 trong 2 biến thể",
+    "category": "Đồ chơi lắp ráp",
+    "provider": "BlockBuilders"
+  },
+  {
+    "id": "p-8",
+    "name": "Đồ chơi xe tải đồ chơi - Heavy Duty Truck",
+    "inventory": "3 trong 3 biến thể",
+    "category": "Đồ chơi xe",
+    "provider": "TruckMasters"
+  },
+  {
+    "id": "p-9",
+    "name": "Bộ đồ chơi hóa trang - Superhero Kit",
+    "inventory": "5 trong 5 biến thể",
+    "category": "Đồ chơi giả lập",
+    "provider": "DressUp"
+  },
+  {
+    "id": "p-10",
+    "name": "Mô hình máy bay - Boeing 747",
+    "inventory": "2 trong 3 biến thể",
+    "category": "Đồ chơi mô hình",
+    "provider": "AeroToys"
+  },
+  {
+    "id": "p-11",
+    "name": "Bộ lắp ráp robot - Robo Builder",
+    "inventory": "1 trong 3 biến thể",
+    "category": "Đồ chơi công nghệ",
+    "provider": "TechToys"
+  },
+  {
+    "id": "p-12",
+    "name": "Đồ chơi xếp hình biển cả - Ocean Puzzle",
+    "inventory": "0 trong 2 biến thể",
+    "category": "Đồ chơi giáo dục",
+    "provider": "PuzzleWorld"
+  },
+  {
+    "id": "p-13",
+    "name": "Mô hình xe máy - Harley Davidson",
+    "inventory": "4 trong 4 biến thể",
+    "category": "Đồ chơi mô hình",
+    "provider": "BikeZone"
+  },
+  {
+    "id": "p-14",
+    "name": "Bộ đồ chơi xây dựng - Construction Set",
+    "inventory": "3 trong 5 biến thể",
+    "category": "Đồ chơi lắp ráp",
+    "provider": "BuildIt"
+  },
+  {
+    "id": "p-15",
+    "name": "Đồ chơi búp bê - Princess Doll",
+    "inventory": "2 trong 2 biến thể",
+    "category": "Đồ chơi búp bê",
+    "provider": "DollHouse"
+  },
+  {
+    "id": "p-16",
+    "name": "Bộ đồ chơi trồng cây - Garden Kit",
+    "inventory": "1 trong 1 biến thể",
+    "category": "Đồ chơi giả lập",
+    "provider": "GreenThumb"
+  },
+  {
+    "id": "p-17",
+    "name": "Mô hình xe đua - Formula 1",
+    "inventory": "3 trong 3 biến thể",
+    "category": "Đồ chơi mô hình",
+    "provider": "RaceTrack"
+  },
+  {
+    "id": "p-18",
+    "name": "Đồ chơi xếp hình hình học - Geometric Puzzle",
+    "inventory": "0 trong 3 biến thể",
+    "category": "Đồ chơi giáo dục",
+    "provider": "SmartToys"
+  },
+  {
+    "id": "p-19",
+    "name": "Bộ đồ chơi khám phá - Explorer Set",
+    "inventory": "5 trong 5 biến thể",
+    "category": "Đồ chơi giáo dục",
+    "provider": "AdventureToys"
+  },
+  {
+    "id": "p-20",
+    "name": "Mô hình tàu thủy - Battleship",
+    "inventory": "2 trong 2 biến thể",
+    "category": "Đồ chơi mô hình",
+    "provider": "NavyToys"
+  },
+  {
+    "id": "p-21",
+    "name": "Bộ đồ chơi nghệ thuật - Art Studio",
+    "inventory": "4 trong 4 biến thể",
+    "category": "Đồ chơi sáng tạo",
+    "provider": "CreativeKids"
+  },
+  {
+    "id": "p-22",
+    "name": "Bộ xếp hình 500 mảnh - Vườn hoa",
+    "inventory": "3 trong 5 biến thể",
+    "category": "Đồ chơi lắp ráp",
+    "provider": "ToyLand"
+  },
+  {
+    "id": "p-23",
+    "name": "Mô hình xe tải - Dump Truck",
+    "inventory": "1 trong 2 biến thể",
+    "category": "Đồ chơi xe",
+    "provider": "TruckMasters"
+  },
+  {
+    "id": "p-24",
+    "name": "Bộ đồ chơi y tế - Doctor Set",
+    "inventory": "0 trong 4 biến thể",
+    "category": "Đồ chơi giả lập",
+    "provider": "HappyKids"
+  },
+  {
+    "id": "p-25",
+    "name": "Mô hình siêu anh hùng - Superhero Figure",
+    "inventory": "3 trong 3 biến thể",
+    "category": "Đồ chơi mô hình",
+    "provider": "DressUp"
+  },
+  {
+    "id": "p-26",
+    "name": "Bộ lắp ráp ô tô - Car Builder",
+    "inventory": "2 trong 3 biến thể",
+    "category": "Đồ chơi công nghệ",
+    "provider": "TechToys"
+  },
+  {
+    "id": "p-27",
+    "name": "Bộ xếp hình 3D - Tòa nhà nổi tiếng",
+    "inventory": "1 trong 2 biến thể",
+    "category": "Đồ chơi giáo dục",
+    "provider": "PuzzleWorld"
+  },
+  {
+    "id": "p-28",
+    "name": "Mô hình máy bay chiến đấu - Fighter Jet",
+    "inventory": "4 trong 4 biến thể",
+    "category": "Đồ chơi mô hình",
+    "provider": "AeroToys"
+  },
+  {
+    "id": "p-29",
+    "name": "Bộ đồ chơi nấu ăn - Cooking Set",
+    "inventory": "2 trong 3 biến thể",
+    "category": "Đồ chơi giả lập",
+    "provider": "GreenThumb"
+  },
+  {
+    "id": "p-30",
+    "name": "Đồ chơi xếp hình cầu - Sphere Puzzle",
+    "inventory": "0 trong 3 biến thể",
+    "category": "Đồ chơi giáo dục",
+    "provider": "SmartToys"
+  },
+  {
+    "id": "p-31",
+    "name": "Mô hình tàu ngầm - Submarine",
+    "inventory": "3 trong 3 biến thể",
+    "category": "Đồ chơi mô hình",
+    "provider": "NavyToys"
+  },
+  {
+    "id": "p-32",
+    "name": "Bộ đồ chơi thiên nhiên - Nature Explorer",
+    "inventory": "5 trong 5 biến thể",
+    "category": "Đồ chơi giáo dục",
+    "provider": "AdventureToys"
+  },
+  {
+    "id": "p-33",
+    "name": "Mô hình xe cộ - Vehicle Set",
+    "inventory": "1 trong 1 biến thể",
+    "category": "Đồ chơi xe",
+    "provider": "CarZone"
+  },
+  {
+    "id": "p-34",
+    "name": "Bộ xếp hình truyền thuyết - Mythical Puzzle",
+    "inventory": "2 trong 2 biến thể",
+    "category": "Đồ chơi lắp ráp",
+    "provider": "BlockBuilders"
+  },
+  {
+    "id": "p-35",
+    "name": "Bộ đồ chơi nghệ thuật - Craft Kit",
+    "inventory": "3 trong 3 biến thể",
+    "category": "Đồ chơi sáng tạo",
+    "provider": "CreativeKids"
+  },
+  {
+    "id": "p-36",
+    "name": "Mô hình động vật - Animal Figurines",
+    "inventory": "4 trong 4 biến thể",
+    "category": "Đồ chơi giáo dục",
+    "provider": "EduToys"
+  },
+  {
+    "id": "p-37",
+    "name": "Bộ đồ chơi xây dựng - Building Blocks",
+    "inventory": "0 trong 4 biến thể",
+    "category": "Đồ chơi lắp ráp",
+    "provider": "BuildIt"
+  },
+  {
+    "id": "p-38",
+    "name": "Mô hình cầu - Bridge Model",
+    "inventory": "2 trong 2 biến thể",
+    "category": "Đồ chơi mô hình",
+    "provider": "RailwayWorld"
+  },
+  {
+    "id": "p-39",
+    "name": "Đồ chơi xếp hình vũ trụ - Space Puzzle",
+    "inventory": "1 trong 1 biến thể",
+    "category": "Đồ chơi giáo dục",
+    "provider": "PuzzleWorld"
+  },
+  {
+    "id": "p-40",
+    "name": "Bộ đồ chơi thể thao - Sports Set",
+    "inventory": "3 trong 3 biến thể",
+    "category": "Đồ chơi giả lập",
+    "provider": "HappyKids"
+  }
+]

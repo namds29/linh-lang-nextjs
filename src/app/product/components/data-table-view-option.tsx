@@ -20,6 +20,12 @@ interface DataTableViewOptionsProps<TData> {
 export function DataTableViewOptions<TData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
+  const labelColumn = {
+    name: "Tên sản phẩm",
+    category: "Loại",
+    inventory: "Tồn kho",
+    provider: "Nhà cung cấp"
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -49,7 +55,7 @@ export function DataTableViewOptions<TData>({
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
-                {column.id}
+                {labelColumn[column.id as keyof typeof labelColumn]}
               </DropdownMenuCheckboxItem>
             )
           })}
