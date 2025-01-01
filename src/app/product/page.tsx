@@ -12,13 +12,7 @@ async function getData(): Promise<Product[]> {
 export function Page() {
   const [data, setData] = useState<Product[]>([]);
   const handleAddProduct = () => {
-   console.log(data.map(item => item.category));
-   const map = data.map(item => item.provider)
-   const set = new Set(map)
-   console.log(set);
-   
-   console.log( [...new Set(map)].map(item => ({value: item, label: item})));
-   
+
   };
   useEffect(() => {
     const handleFetchData = async () => {

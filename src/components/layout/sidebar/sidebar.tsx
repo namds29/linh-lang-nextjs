@@ -1,19 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
+  PackageSearch,
   SquareTerminal,
-} from "lucide-react"
-
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -21,9 +12,10 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { CompanySwitcher } from "./company-switcher"
-import Logo from "../../../../public/icon/logo.png"
+} from "@/components/ui/sidebar";
+import { CompanySwitcher } from "./company-switcher";
+import { NavMain } from "./nav-main";
+
 // This is sample data.
 const data = {
   user: {
@@ -34,109 +26,65 @@ const data = {
   company: [
     {
       name: "Acme Inc",
-      logo: Logo,
+      logo: "/icon/logo.png",
       plan: "Enterprise",
     },
     {
       name: "Acme Corp.",
-      logo: AudioWaveform,
+      logo: "/icon/logo.png",
       plan: "Startup",
     },
     {
       name: "Evil Corp.",
-      logo: Command,
+      logo: "/icon/logo.png",
       plan: "Free",
     },
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Sản phẩm",
       url: "#",
-      icon: SquareTerminal,
+      icon: PackageSearch,
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "Tất cả sản phẩm",
+          url: "/product",
         },
         {
-          title: "Starred",
-          url: "#",
+          title: "Nhóm sản phẩm",
+          url: "/product/categories",
         },
         {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
+          title: "Tồn kho",
           url: "#",
         },
       ],
     },
   ],
-
-}
+  navSale: [
+    {
+      title: "Website",
+      url: "#",
+      icon: SquareTerminal,
+      isActive: true,
+      items: [
+        {
+          title: "Blogs",
+          url: "#",
+        },
+        {
+          title: "Trang nội dung",
+          url: "#",
+        },
+        {
+          title: "menu",
+          url: "#",
+        },
+      ],
+    },
+  ],
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -144,14 +92,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <CompanySwitcher companies={data.company} />
       </SidebarHeader>
-      {/* <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+      <SidebarContent>
+        <NavMain items={data.navMain} groupLbl={"Platform"} />
+        <NavMain items={data.navSale} groupLbl={"Kênh bán hàng"} />
       </SidebarContent>
-      <SidebarFooter>
+      {/* <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter> */}
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

@@ -21,7 +21,7 @@ const Header = () => {
       </section>
       <section id="header-function" className="flex items-center gap-5">
         <Button variant="secondary">
-          <img className="w-5" src="icon/ic-notification.svg" alt="" />
+          <img className="w-5" src="/icon/ic-notification.svg" alt="" />
         </Button>
 
         <DropdownMenu>
