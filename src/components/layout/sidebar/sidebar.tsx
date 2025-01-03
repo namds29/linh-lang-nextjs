@@ -78,7 +78,7 @@ const data = {
           url: "#",
         },
         {
-          title: "menu",
+          title: "Menu",
           url: "#",
         },
       ],

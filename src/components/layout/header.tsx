@@ -9,7 +9,7 @@ import {
   } from "@/components/ui/dropdown-menu";
 const Header = () => {
   return (
-    <header className="w-full p-2 flex justify-between items-center border-b">
+    <header className="w-full h-[60px] p-2 flex justify-between items-center border-b fixed">
       <section id="header-toggle-slide">
         <div className="h-[2.5rem] w-[2.5rem]">
           <img

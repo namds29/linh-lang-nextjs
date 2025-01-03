@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Linh Lang Company',
   description: 'Linh Lang Đồ Gỗ',
-  icons: 'icon/logo.png'
+  icons: '/icon/logo.png'
 }
 
 export default function RootLayout ({
@@ -35,9 +35,9 @@ export default function RootLayout ({
         <div className='container-fluid'>
           <Header />
           <SidebarProvider>
-            <div className=' h-[calc(100vh-56px)] w-full flex'>
+            <div className='w-full flex'>
               <AppSidebar />
-              <section id='main-content' className='w-full px-8 py-4'>
+              <section id='main-content' className='w-full pl-8 mt-[60px]'>
                 {children}
               </section>
             </div>

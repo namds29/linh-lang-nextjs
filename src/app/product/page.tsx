@@ -5,14 +5,16 @@ import { DataTable } from "./components/data-table";
 import product from "@/services/product.json"; // Adjust the path as needed
 import { Product } from "./mock/types";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 async function getData(): Promise<Product[]> {
   // Fetch data from your API here.
   return product;
 }
 export function Page() {
   const [data, setData] = useState<Product[]>([]);
+  const navigate = useRouter()
   const handleAddProduct = () => {
-
+    navigate.push('/product/add')
   };
   useEffect(() => {
     const handleFetchData = async () => {
