@@ -99,3 +99,9 @@ body {
 .box-shadow-style{
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
 }
+.ql-container{
+  min-height: 40vh;
+}
+.border-input-custom{
+  border-color: #b8c7e5;
+}
