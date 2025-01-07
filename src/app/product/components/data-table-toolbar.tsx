@@ -6,7 +6,7 @@ import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { DataTableViewOptions } from "./data-table-view-option"
-import { labels, provider } from "../mock/label"
+import { labels, provider } from "../../../lib/mock/label"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>

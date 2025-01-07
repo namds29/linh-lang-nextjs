@@ -17,8 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { labels } from "../mock/label";
-import { Task } from "../mock/types";
+import { labels } from "../../../lib/mock/label";
+import { Task } from "../../../lib/mock/types";
 import { Button } from "@/components/ui/button";
 
 interface DataTableRowActionsProps<TData> {

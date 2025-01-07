@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { columns } from "./components/column";
 import { DataTable } from "./components/data-table";
 import product from "@/services/product.json"; // Adjust the path as needed
-import { Product } from "./mock/types";
+import { Product } from "../../lib/mock/types";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 async function getData(): Promise<Product[]> {

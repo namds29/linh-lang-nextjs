@@ -25,7 +25,7 @@ const data = {
   },
   company: [
     {
-      name: "Acme Inc",
+      name: "Linh Lang Corp",
       logo: "/icon/logo.png",
       plan: "Enterprise",
     },
