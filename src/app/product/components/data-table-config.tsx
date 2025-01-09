@@ -37,6 +37,8 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  console.log(data, 'config');
+  
   const table = useReactTable({
     data,
     columns,
@@ -55,7 +57,8 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
-
+  console.log(data);
+  
   return (
     <div>
       <DataTableToolbar table={table} />

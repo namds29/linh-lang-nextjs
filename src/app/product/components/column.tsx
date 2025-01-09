@@ -3,9 +3,6 @@
 import { Checkbox } from '@/components/ui/checkbox'
 import { ColumnDef } from '@tanstack/react-table'
 import { DataTableColumnHeader } from './data-table-header-column'
-import { Badge } from '@/components/ui/badge'
-import { Product } from '../../../lib/mock/types'
-import { labels } from '../../../lib/mock/label'
 import { DataTableRowActions } from './data-table-row-actions'
 import {
   HoverCard,
@@ -13,6 +10,7 @@ import {
   HoverCardTrigger
 } from '@/components/ui/hover-card'
 import Image from 'next/image'
+import Product, { Category } from '@/lib/mock/types'
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -72,48 +70,49 @@ export const columns: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title='Loại' />
     ),
     cell: ({ row }) => {
-      const label = labels.find(label => label.value === row.original.category)
-
+      const category = row.getValue('category') as Category
+      console.log(category);
+      
       return (
         <div className='flex space-x-2'>
-          {label && <Badge variant='outline'>{label.label}</Badge>}
+            {category.name}
         </div>
       )
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    }
+    // filterFn: (row, id, value) => {
+    //   return value.includes(row.getValue(id))
+    // }
   },
-  {
-    accessorKey: 'inventory',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Tồn kho' />
-    ),
-    cell: ({ row }) => {
-      return <span>{row.getValue('inventory')}</span>
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue('inventory'))
-    }
-  },
-  {
-    accessorKey: 'provider',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Nhà cung cấp' />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className='flex items-center'>
-          <span>{row.getValue('provider')}</span>
-        </div>
-      )
-    },
-    filterFn: (row, id, value) => {
-      console.log(id)
+  // {
+  //   accessorKey: 'inventory',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Tồn kho' />
+  //   ),
+  //   cell: ({ row }) => {
+  //     return <span>{row.getValue('inventory')}</span>
+  //   },
+  //   filterFn: (row, id, value) => {
+  //     return value.includes(row.getValue('inventory'))
+  //   }
+  // },
+  // {
+  //   accessorKey: 'provider',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Nhà cung cấp' />
+  //   ),
+  //   cell: ({ row }) => {
+  //     return (
+  //       <div className='flex items-center'>
+  //         <span>{row.getValue('provider')}</span>
+  //       </div>
+  //     )
+  //   },
+  //   filterFn: (row, id, value) => {
+  //     console.log(id)
 
-      return value.includes(row.getValue('provider'))
-    }
-  },
+  //     return value.includes(row.getValue('provider'))
+  //   }
+  // },
   {
     id: 'actions',
     cell: ({ table, row }) => <DataTableRowActions row={row} table={table} />
