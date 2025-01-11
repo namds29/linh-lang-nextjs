@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { labels } from "../../../lib/mock/label";
-import { Task } from "../../../lib/mock/types";
 import { Button } from "@/components/ui/button";
+import Product from "@/lib/mock/types";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -30,7 +30,7 @@ export function DataTableRowActions<TData>({
   row,
   table,
 }: DataTableRowActionsProps<TData>) {
-  const task = row.original as Task;
+  const task = row.original as Product;
   const handleDeleteRow = () => {
     // console.log(table.getCoreRowModel().rows[0]);
     // console.log(task);
@@ -53,21 +53,6 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem>Make a copy</DropdownMenuItem>
-        <DropdownMenuItem>Favorite</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.label}>
-              {labels.map((label) => (
-                <DropdownMenuRadioItem key={label.value} value={label.value}>
-                  {label.label}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => handleDeleteRow()}>
           Delete

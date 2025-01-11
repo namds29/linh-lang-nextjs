@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { DataTableViewOptions } from "./data-table-view-option"
 import { labels, provider } from "../../../lib/mock/label"
+import { useEffect, useState } from "react"
+import productsService from "@/services/products.service"
+import { Category } from "@/lib/mock/types"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -15,8 +18,16 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
+  const [listCategories, setListCategories] = useState<Category[]>([])
   const isFiltered = table.getState().columnFilters.length > 0
-
+  useEffect(()=>{
+    const handleGetListCategory = async ()=>{
+      const res = await productsService.fetchCategories()
+      console.log(res);
+      setListCategories(res)
+    }
+    handleGetListCategory()
+  },[])
   return (
     <div className="flex items-center justify-between mb-3">
       <div className="flex flex-1 items-center space-x-2">
@@ -32,16 +43,16 @@ export function DataTableToolbar<TData>({
           <DataTableFacetedFilter
             column={table.getColumn("category")}
             title="Loại sản phẩm"
-            options={labels}
+            options={listCategories}
           />
         )}
-        {table.getColumn("provider") && (
+        {/* {table.getColumn("provider") && (
           <DataTableFacetedFilter
             column={table.getColumn("provider")}
             title="Nhà cung cấp"
             options={provider}
           />
-        )}
+        )} */}
         {isFiltered && (
           <Button
             variant="ghost"
