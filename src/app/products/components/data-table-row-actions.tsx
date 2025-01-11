@@ -19,7 +19,8 @@ import {
 
 import { labels } from "../../../lib/mock/label";
 import { Button } from "@/components/ui/button";
-import Product from "@/lib/mock/types";
+import Product from "@/lib/types/types";
+import productsService from "@/services/products.service";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -30,15 +31,12 @@ export function DataTableRowActions<TData>({
   row,
   table,
 }: DataTableRowActionsProps<TData>) {
-  const task = row.original as Product;
-  const handleDeleteRow = () => {
-    // console.log(table.getCoreRowModel().rows[0]);
-    // console.log(task);
+  const productDetail = row.original as Product;
+  const handleDeleteRow = async () => {
+    console.log(productDetail);
+    const res = await productsService.deleteProduct(productDetail.id)
+    console.log(res);
     
-    //  table.getCoreRowModel().rows.filter((item) => {
-    //   return (item.original as Task).id !== task.id;
-    // });
-    // console.log(data);
   };
   return (
     <DropdownMenu>
@@ -54,7 +52,8 @@ export function DataTableRowActions<TData>({
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem>Edit</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => handleDeleteRow()}>
+        <DropdownMenuItem onClick={handleDeleteRow}>
+          
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>

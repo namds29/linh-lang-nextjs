@@ -49,7 +49,7 @@ const data = {
       items: [
         {
           title: "Tất cả sản phẩm",
-          url: "/product",
+          url: "/products",
         },
         {
           title: "Nhóm sản phẩm",

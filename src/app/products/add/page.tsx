@@ -23,6 +23,7 @@ import { ChangeEvent, FocusEvent, useEffect, useState } from 'react'
 import { CircleHelp, ImageUp } from 'lucide-react'
 import { formatCurrency } from '@/lib/pipes/currency'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@/components/ui/button'
 
 type Product = {
   sellPrice: string
@@ -30,9 +31,9 @@ type Product = {
   imgFile: any
   unit: number
 }
-interface InputWithTooltipProps {
+interface InputLabelProps {
   label: string
-  tooltipText: string
+  tooltipText?: string
   value: string
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
   onFocus?: () => void
@@ -42,7 +43,7 @@ interface InputWithTooltipProps {
   className?: string
   type?: string // Optional, defaults to 'text'
 }
-const InputWithTooltip = ({
+const InputLabel = ({
   label,
   tooltipText,
   value,
@@ -53,21 +54,23 @@ const InputWithTooltip = ({
   placeholder,
   className,
   type = 'text' // Default to 'text' if not provided
-}: InputWithTooltipProps) => {
+}: InputLabelProps) => {
   return (
     <div className={className}>
       <label className='text-sm flex' htmlFor={id}>
         {label}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <div>
-              <CircleHelp className='ml-1 text-blue-500' size={18} />
-            </div>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{tooltipText}</p>
-          </TooltipContent>
-        </Tooltip>
+        {tooltipText && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <CircleHelp className='ml-1 text-blue-500' size={18} />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{tooltipText}</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
       </label>
       <Input
         className='w-full'
@@ -91,7 +94,13 @@ export function ProductAddPage () {
     imgFile: [],
     unit: 0
   })
-  const [isShipped, setIsShipped] = useState<boolean>(false)
+  const [fieldSEO, setFieldSEO] = useState({
+    titlePage: '',
+    description: '',
+    url: ''
+  })
+  const [isMultiUnit, setIsMultiUnit] = useState<boolean>(false)
+  const [toggleSEO, setToggleSEO] = useState<boolean>(false)
   const editContentState = (value: any) => {
     setValue(value)
   }
@@ -127,12 +136,9 @@ export function ProductAddPage () {
       // ... handle the selected files ...
     }
   }
-  const handleCheckboxChange = (e: any) => {
-    console.log(e)
-    setIsShipped(!isShipped)
-  }
+
   return (
-    <div className='py-4'>
+    <div className='py-4 w-[80%]'>
       <div className='text-2xl font-bold text-red-400'>Tạo sản phẩm</div>
       <section className='py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 min-h-[83vh] rounded-md'>
         <p className='font-bold'>Thông tin chung</p>
@@ -280,7 +286,7 @@ export function ProductAddPage () {
         <div className='flex w-full mb-2 items-center'>Giá sản phẩm</div>
         <Separator />
         <div className='grid grid-cols-2 gap-8 mt-4'>
-          <InputWithTooltip
+          <InputLabel
             label='Giá bán'
             tooltipText='Số tiền khách hàng cần thanh toán'
             value={product.comparePrice}
@@ -293,7 +299,7 @@ export function ProductAddPage () {
             placeholder='0 đ'
           />
 
-          <InputWithTooltip
+          <InputLabel
             label='Giá so sánh'
             tooltipText='Số tiền chưa giảm giá, thể hiện giá trị giảm giá, ưu đãi cho
                     khách hàng'
@@ -310,47 +316,96 @@ export function ProductAddPage () {
       </section>
 
       <section className='py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md'>
-        <div className='flex w-full mb-2 items-center'>Vận chuyển</div>
+        <div className='flex w-full mb-2 items-center'>Đơn vị tính</div>
         <Separator />
         <div className='flex items-center space-x-2 mt-4'>
           <Checkbox
-            id='ship'
-            checked={isShipped}
-            onCheckedChange={handleCheckboxChange}
+            id='unit'
+            checked={isMultiUnit}
+            onCheckedChange={() => setIsMultiUnit(!isMultiUnit)}
           />
           <label
-            htmlFor='ship'
+            htmlFor='unit'
             className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
-            Chọn để cho phép giao hàng với sản phẩm này
+            Biến thể có nhiều đơn vị tính (ví dụ: lon, lốc, thùng...)
           </label>
         </div>
-        <InputWithTooltip
-          className='mt-4'
-          label='Khối lượng'
-          placeholder='0'
-          type='number'
-          tooltipText={'Sử dụng để tính khối lượng khi giao hàng'}
-          value={product.unit.toString()}
-          id='unit'
-          onChange={e => setProduct({ ...product, unit: +e.target.value })}
-        />
+        {isMultiUnit && (
+          <InputLabel
+            className='mt-4'
+            label='Đơn vị cơ bản'
+            placeholder='0'
+            type='number'
+            tooltipText={'Đơn vị nhỏ nhất của sản phẩm như lon, hộp...'}
+            value={product.unit.toString()}
+            id='unit'
+            onChange={e => setProduct({ ...product, unit: +e.target.value })}
+          />
+        )}
       </section>
 
-      <section className='py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md'>
-        <div className='flex w-full mb-2 items-center'>Đơn vị tính</div>
+      {/* <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
+        <div className="flex w-full mb-2 items-center">Biến thể</div>
         <Separator />
-      </section>
+      </section> */}
 
       <section className='py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md'>
-        <div className='flex w-full mb-2 items-center'>Biến thể</div>
+        <div className='flex w-full mb-2 items-center justify-between'>
+          <p>Tối ưu SEO</p>
+          <Button onClick={() => setToggleSEO(!toggleSEO)}>
+            Chỉnh sửa SEO
+          </Button>
+        </div>
         <Separator />
+        <p className='mt-4'>
+          Thiết lập các thẻ mô tả giúp khách hàng dễ dàng tìm thấy danh mục này
+          trên công cụ tìm kiếm như Google
+        </p>
+        <p className='text-xl collection-seo--preview-title mt-1'>
+          {fieldSEO.titlePage}
+        </p>
+        <p className='text-sm collection-seo--preview-mota mt-1'>
+          {fieldSEO.description}
+        </p>
+        <p className='text-xs collection-seo--preview-url mt-1'>
+          {fieldSEO.url}
+        </p>
+        {toggleSEO && (
+          <div className='mt-4'>
+            <InputLabel
+              id='title-page'
+              placeholder='Tiêu đề trang'
+              label='Tiêu đề trang'
+              value={fieldSEO.titlePage}
+              onChange={e =>
+                setFieldSEO({ ...fieldSEO, titlePage: e.target.value })
+              }
+            />
+            <InputLabel
+              className='mt-4'
+              id='description-page'
+              placeholder='Mô tả trang'
+              label='Mô tả trang'
+              value={fieldSEO.description}
+              onChange={e =>
+                setFieldSEO({ ...fieldSEO, description: e.target.value })
+              }
+            />
+            <InputLabel
+              className='mt-4'
+              id='link-page'
+              placeholder='Đường dẫn'
+              label='Đường dẫn'
+              value={fieldSEO.url}
+              onChange={e => setFieldSEO({ ...fieldSEO, url: e.target.value })}
+            />
+          </div>
+        )}
       </section>
-
-      <section className='py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md'>
-        <div className='flex w-full mb-2 items-center'>Tối ưu SEO</div>
-        <Separator />
-      </section>
+      <div className=' flex justify-end'>
+        <Button className='my-4'>Lưu</Button>
+      </div>
     </div>
   )
 }

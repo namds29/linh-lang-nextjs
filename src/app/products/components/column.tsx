@@ -12,7 +12,7 @@ import {
   HoverCardTrigger
 } from '@/components/ui/hover-card'
 import Image from 'next/image'
-import Product from '@/lib/mock/types'
+import Product from '@/lib/types/types'
 import { formatCurrency } from '@/lib/pipes/currency'
 
 export const columns: ColumnDef<Product>[] = [
