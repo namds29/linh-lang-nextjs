@@ -13,8 +13,7 @@ const ClientPage = ({columns, data}: ClientDataTableProps) => {
   const handleAddProduct = () => {
     navigate.push('/products/add')
   }
-  // console.log(data);
-  
+
   return (
     <div>
       <div className='flex items-center justify-between'>

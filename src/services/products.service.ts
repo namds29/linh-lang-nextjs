@@ -1,16 +1,12 @@
-
-import { api } from "@/lib/api.config";
+import { api, ApiResponse } from "@/lib/api.config";
 import Product, { Category, ProductDetail } from "@/lib/types/types";
 import { API_ENDPOINTS, API_URL } from "@/lib/routes/api";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 const fetchProduct = async () => {
- 
   if (API_URL) {
     // const res = await fetch(API_URL + API_ENDPOINTS.PRODUCT);
-    const res = await api.get<Product[]>(API_ENDPOINTS.PRODUCT, ['products']);
-    console.log(res);
-
+    const res = await api.get<Product[]>(API_ENDPOINTS.PRODUCT, ["products"]);
     const data = res.data;
     return data.payload;
   }
@@ -32,10 +28,45 @@ const fetchCategories = async (): Promise<Category[]> => {
 };
 const deleteProduct = async (productId: string): Promise<void> => {
   const res = await api.delete(`${API_ENDPOINTS.PRODUCT}/${productId}`);
-  if(res.status === 200) redirect('/products')
+  if (res.status === 200) redirect("/products");
 };
 
-const createProduct = async (product: ProductDetail): Promise<void>=> {
-
-}
-export default { fetchProduct, fetchCategories, deleteProduct };
+const createProduct = async <T>(product: ProductDetail): Promise<any> => {
+  try {
+    const res = await api.post(`${API_ENDPOINTS.PRODUCT}`, product);
+    return res;
+  } catch (error) {
+    return { message: error, status: 400 };
+  }
+};
+const createImagesProduct = async (
+  productId: string,
+  body: File[]
+): Promise<any> => {
+  try {
+    console.log(body);
+    const formData = new FormData();
+    body.forEach((file, index) => {
+      formData.append(`file`, file); // 'file0', 'file1', etc.
+    });
+    const requestOptions: any = {
+      method: "POST",
+      body: formData,
+      redirect: "follow",
+    };
+    const res = await fetch(
+      `${API_ENDPOINTS.PRODUCT}/${productId}/images`,
+      requestOptions
+    );
+    return res;
+  } catch (error) {
+    return { message: error, status: 400 };
+  }
+};
+export default {
+  fetchProduct,
+  fetchCategories,
+  deleteProduct,
+  createProduct,
+  createImagesProduct,
+};

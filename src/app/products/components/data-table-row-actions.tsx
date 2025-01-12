@@ -21,6 +21,7 @@ import { labels } from "../../../lib/mock/label";
 import { Button } from "@/components/ui/button";
 import Product from "@/lib/types/types";
 import productsService from "@/services/products.service";
+import { redirect } from "next/navigation";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -50,7 +51,7 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => redirect('/products/edit')}>Edit</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleDeleteRow}>
           

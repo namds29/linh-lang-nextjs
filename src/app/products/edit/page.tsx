@@ -151,7 +151,7 @@ export function ProductAddPage() {
   };
   return (
     <div className="py-4 w-[80%]">
-      <div className="text-2xl font-bold text-red-400">Tạo sản phẩm</div>
+      <div className="text-2xl font-bold text-red-400">Sửa sản phẩm</div>
       <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 min-h-[70vh] rounded-md">
         <p className="font-bold">Thông tin chung</p>
         <Separator />

@@ -3,12 +3,12 @@
 import { API_ENDPOINTS, API_URL } from "./routes/api";
 
 // Type definition for the request data
-interface RequestData {
+export interface RequestData {
   [key: string]: any; // Replace with more specific types as needed
 }
 
 // Type definition for the API response
-interface ApiResponse<T> {
+export interface ApiResponse<T> {
   data: {
     payload: T;
     responseCode: string;
