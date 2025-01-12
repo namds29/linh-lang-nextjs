@@ -301,7 +301,7 @@ export function ProductAddPage() {
             <div className="flex w-full gap-4">
               {listImg.urls.length > 0 &&
                 listImg.urls.map((img, index) => (
-                  <div className="w-full">
+                  <div key={img + index} className="w-full">
                     <img
                       className="w-full"
                       key={img + index}
