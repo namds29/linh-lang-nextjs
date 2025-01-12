@@ -37,8 +37,11 @@ export function DataTableRowActions<TData>({
     console.log(productDetail);
     const res = await productsService.deleteProduct(productDetail.id)
     console.log(res);
-    
   };
+  const handleEdit = async () => {
+    console.log(productDetail);
+    redirect(`/products/${productDetail.id}/edit`)
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -51,7 +54,7 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem onClick={() => redirect('/products/edit')}>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleEdit()}>Edit</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleDeleteRow}>
           

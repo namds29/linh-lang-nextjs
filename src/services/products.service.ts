@@ -47,7 +47,7 @@ const createImagesProduct = async (
     console.log(body);
     const formData = new FormData();
     body.forEach((file, index) => {
-      formData.append(`file`, file); // 'file0', 'file1', etc.
+      formData.append("files", file); // 'file0', 'file1', etc.
     });
     const requestOptions: any = {
       method: "POST",
@@ -55,7 +55,7 @@ const createImagesProduct = async (
       redirect: "follow",
     };
     const res = await fetch(
-      `${API_ENDPOINTS.PRODUCT}/${productId}/images`,
+      `${API_URL}${API_ENDPOINTS.PRODUCT}/${productId}/images`,
       requestOptions
     );
     return res;
@@ -63,10 +63,16 @@ const createImagesProduct = async (
     return { message: error, status: 400 };
   }
 };
+
+const getDetailProduct = async (productId: string): Promise<ProductDetail> => {
+  const res = await api.get(API_ENDPOINTS.PRODUCT + "/" + productId);
+  return res.data.payload as ProductDetail;
+};
 export default {
   fetchProduct,
   fetchCategories,
   deleteProduct,
   createProduct,
   createImagesProduct,
+  getDetailProduct,
 };

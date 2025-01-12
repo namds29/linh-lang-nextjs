@@ -30,6 +30,7 @@ import productsService from "@/services/products.service";
 
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
+import { useParams } from "next/navigation";
 
 type Product = {
   name: string;
@@ -58,7 +59,11 @@ export function ProductAddPage() {
     imgFile: [],
     unit: 0,
   });
-  const [fieldSEO, setFieldSEO] = useState({
+  const [fieldSEO, setFieldSEO] = useState<{
+    titlePage?: string;
+    description?: string;
+    url?: string;
+  }>({
     titlePage: "",
     description: "",
     url: "",
@@ -66,11 +71,40 @@ export function ProductAddPage() {
   const [isMultiUnit, setIsMultiUnit] = useState<boolean>(false);
   const [toggleSEO, setToggleSEO] = useState<boolean>(false);
   const { toast } = useToast();
+  const params = useParams<{ id: string }>();
+
   const editContentState = (value: any) => {
     setValue(value);
     setProduct({ ...product, description: value });
   };
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const handleGetDetailProduct = async () => {
+      const res: ProductDetail = await productsService.getDetailProduct(
+        params.id
+      );
+      console.log(res);
+      setProduct({
+        ...product,
+        name: res.name,
+        provider: res.provider.name,
+        category: res.category.name,
+        comparePrice: res.comparePrice ? res.comparePrice.toString() : "",
+        sellPrice: res.price.toString(),
+        description: res.description,
+      });
+      setFieldSEO({
+        ...fieldSEO,
+        titlePage: res.seo?.title,
+        description: res.seo?.description,
+        url: res.seo?.link,
+      });
+      if (res.description) setValue(res.description);
+      if (res.images && res.images.length > 0) {
+        setListImg({ ...listImg, urls: res.images });
+      }
+    };
+    handleGetDetailProduct();
+  }, []);
   const handleBlur = (e: any, key: string) => {
     const amount = +e.target.value; // Convert input value to a number
     if (!isNaN(amount)) {
@@ -121,9 +155,9 @@ export function ProductAddPage() {
         product["comparePrice"].replace(/đ/, "").replace(".", "").trim()
       ),
       seo: {
-        title: fieldSEO.titlePage,
-        description: fieldSEO.description,
-        link: fieldSEO.url,
+        title: fieldSEO.titlePage ?? '',
+        description: fieldSEO.description ?? '',
+        link: fieldSEO.url ?? '',
       },
     };
 
@@ -179,6 +213,7 @@ export function ProductAddPage() {
                 onValueChange={(value) =>
                   setProduct({ ...product, provider: value })
                 }
+                defaultValue={product.provider}
                 required
               >
                 <SelectTrigger className="">
@@ -202,6 +237,7 @@ export function ProductAddPage() {
               </label>
               <Select
                 required
+                defaultValue={product?.category}
                 onValueChange={(value) =>
                   setProduct({ ...product, category: value })
                 }
@@ -301,7 +337,7 @@ export function ProductAddPage() {
             <div className="flex w-full gap-4">
               {listImg.urls.length > 0 &&
                 listImg.urls.map((img, index) => (
-                  <div className="w-full">
+                  <div key={img + index} className="w-full">
                     <img
                       className="w-full"
                       key={img + index}
@@ -413,7 +449,7 @@ export function ProductAddPage() {
               id="title-page"
               placeholder="Tiêu đề trang"
               label="Tiêu đề trang"
-              value={fieldSEO.titlePage}
+              value={fieldSEO.titlePage ?? ''}
               onChange={(e) =>
                 setFieldSEO({ ...fieldSEO, titlePage: e.target.value })
               }
@@ -423,7 +459,7 @@ export function ProductAddPage() {
               id="description-page"
               placeholder="Mô tả trang"
               label="Mô tả trang"
-              value={fieldSEO.description}
+              value={fieldSEO.description ?? ''}
               onChange={(e) =>
                 setFieldSEO({ ...fieldSEO, description: e.target.value })
               }
@@ -433,7 +469,7 @@ export function ProductAddPage() {
               id="link-page"
               placeholder="Đường dẫn"
               label="Đường dẫn"
-              value={fieldSEO.url}
+              value={fieldSEO.url ?? ''}
               onChange={(e) =>
                 setFieldSEO({ ...fieldSEO, url: e.target.value })
               }

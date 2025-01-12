@@ -51,14 +51,16 @@ export interface ProductVariant {
 export interface ProductDetail {
   name: string;
   provider: {
+    id?: string;
     name: string;
   };
   category: {
+    id?: string;
     name: string;
   };
   description: string;
   quote?: string;
-  images?: any;
+  images?: any[];
   price: number;
   comparePrice: number;
   seo?: {
