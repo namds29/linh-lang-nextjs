@@ -1,6 +1,6 @@
 
 import { api } from "@/lib/api.config";
-import Product, { Category } from "@/lib/mock/types";
+import Product, { Category, ProductDetail } from "@/lib/types/types";
 import { API_ENDPOINTS, API_URL } from "@/lib/routes/api";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
@@ -32,6 +32,10 @@ const fetchCategories = async (): Promise<Category[]> => {
 };
 const deleteProduct = async (productId: string): Promise<void> => {
   const res = await api.delete(`${API_ENDPOINTS.PRODUCT}/${productId}`);
-  redirect('/products')
+  if(res.status === 200) redirect('/products')
 };
+
+const createProduct = async (product: ProductDetail): Promise<void>=> {
+
+}
 export default { fetchProduct, fetchCategories, deleteProduct };

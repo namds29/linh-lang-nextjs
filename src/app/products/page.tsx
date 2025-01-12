@@ -2,7 +2,7 @@ import { columns } from "./components/column";
 
 import ClientDataTable from "./client-page";
 import productsService from "@/services/products.service";
-import Product from "@/lib/mock/types";
+import Product from "@/lib/types/types";
 
 async function Page() {
   const res: any = await productsService.fetchProduct();

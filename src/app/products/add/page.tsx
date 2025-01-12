@@ -1,5 +1,5 @@
-"use client";
-import { Input } from "@/components/ui/input";
+'use client'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -7,42 +7,43 @@ import {
   SelectItem,
   SelectLabel,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  SelectValue
+} from '@/components/ui/select'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Separator } from "@/components/ui/separator";
-import TextEditor from "@/components/ui/text-editor";
+  TooltipTrigger
+} from '@/components/ui/tooltip'
+import { Separator } from '@/components/ui/separator'
+import TextEditor from '@/components/ui/text-editor'
 
-import { labels, provider } from "@/lib/mock/label";
-import { ChangeEvent, FocusEvent, useEffect, useState } from "react";
-import { CircleHelp, ImageUp } from "lucide-react";
-import { formatCurrency } from "@/lib/pipes/currency";
-import { Checkbox } from "@/components/ui/checkbox";
+import { labels, provider } from '@/lib/mock/label'
+import { ChangeEvent, FocusEvent, useEffect, useState } from 'react'
+import { CircleHelp, ImageUp } from 'lucide-react'
+import { formatCurrency } from '@/lib/pipes/currency'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@/components/ui/button'
 
 type Product = {
-  sellPrice: string;
-  comparePrice: string;
-  imgFile: any;
-  unit: number;
-};
-interface InputWithTooltipProps {
-  label: string;
-  tooltipText: string;
-  value: string;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  onFocus?: () => void;
-  onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
-  id: string;
-  placeholder: string;
-  className?: string;
-  type?: string; // Optional, defaults to 'text'
+  sellPrice: string
+  comparePrice: string
+  imgFile: any
+  unit: number
 }
-const InputWithTooltip = ({
+interface InputLabelProps {
+  label: string
+  tooltipText?: string
+  value: string
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  onFocus?: () => void
+  onBlur?: (e: FocusEvent<HTMLInputElement>) => void
+  id: string
+  placeholder: string
+  className?: string
+  type?: string // Optional, defaults to 'text'
+}
+const InputLabel = ({
   label,
   tooltipText,
   value,
@@ -52,25 +53,27 @@ const InputWithTooltip = ({
   id,
   placeholder,
   className,
-  type = "text", // Default to 'text' if not provided
-}: InputWithTooltipProps) => {
+  type = 'text' // Default to 'text' if not provided
+}: InputLabelProps) => {
   return (
     <div className={className}>
-      <label className="text-sm flex" htmlFor={id}>
+      <label className='text-sm flex' htmlFor={id}>
         {label}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <div>
-              <CircleHelp className="ml-1 text-blue-500" size={18} />
-            </div>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{tooltipText}</p>
-          </TooltipContent>
-        </Tooltip>
+        {tooltipText && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <CircleHelp className='ml-1 text-blue-500' size={18} />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{tooltipText}</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
       </label>
       <Input
-        className="w-full"
+        className='w-full'
         type={type}
         value={value}
         onFocus={onFocus}
@@ -80,85 +83,91 @@ const InputWithTooltip = ({
         placeholder={placeholder}
       />
     </div>
-  );
-};
+  )
+}
 
-export function ProductAddPage() {
-  const [value, setValue] = useState("");
+export function ProductAddPage () {
+  const [value, setValue] = useState('')
   const [product, setProduct] = useState<Product>({
-    sellPrice: "",
-    comparePrice: "",
+    sellPrice: '',
+    comparePrice: '',
     imgFile: [],
-    unit: 0,
-  });
-  const [isMultiUnit, setIsMultiUnit] = useState<boolean>(false);
+    unit: 0
+  })
+  const [fieldSEO, setFieldSEO] = useState({
+    titlePage: '',
+    description: '',
+    url: ''
+  })
+  const [isMultiUnit, setIsMultiUnit] = useState<boolean>(false)
+  const [toggleSEO, setToggleSEO] = useState<boolean>(false)
   const editContentState = (value: any) => {
-    setValue(value);
-  };
-  useEffect(() => {}, []);
+    setValue(value)
+  }
+  useEffect(() => {}, [])
   const handleBlur = (e: any, key: string) => {
-    const amount = +e.target.value; // Convert input value to a number
+    const amount = +e.target.value // Convert input value to a number
     if (!isNaN(amount)) {
-      const formattedValue = formatCurrency(amount);
-      setProduct({ ...product, [key]: formattedValue }); // Update the state with the formatted value
+      const formattedValue = formatCurrency(amount)
+      setProduct({ ...product, [key]: formattedValue }) // Update the state with the formatted value
     }
-  };
+  }
   const handleDrop = (e: any) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      console.log(e);
-      setProduct({ ...product, imgFile: Array.from(e.dataTransfer.files) });
+      console.log(e)
+      setProduct({ ...product, imgFile: Array.from(e.dataTransfer.files) })
       // setFiles(Array.from(e.dataTransfer.files));
       // ... handle the uploaded files (e.g., upload to server) ...
     }
-  };
+  }
   const handleFocus = (key: keyof Product) => {
     setProduct({
       ...product,
-      [key]: product[key].replace(/đ/, "").replace(".", "").trim(),
-    });
-  };
+      [key]: product[key].replace(/đ/, '').replace('.', '').trim()
+    })
+  }
   const handleFileInputChange = (e: any) => {
     if (e.target.files) {
-      console.log(e);
-      setProduct({ ...product, imgFile: Array.from(e.target.files) });
+      console.log(e)
+      setProduct({ ...product, imgFile: Array.from(e.target.files) })
       // ... handle the selected files ...
     }
-  };
+  }
 
   return (
-    <div className="py-4 w-[70rem]">
-      <div className="text-2xl font-bold text-red-400">Tạo sản phẩm</div>
-      <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 min-h-[83vh] rounded-md">
-        <p className="font-bold">Thông tin chung</p>
+    <div className='py-4 w-[80%]'>
+      <div className='text-2xl font-bold text-red-400'>Tạo sản phẩm</div>
+      <section className='py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 min-h-[83vh] rounded-md'>
+        <p className='font-bold'>Thông tin chung</p>
         <Separator />
-        <div className="mt-4 w-full">
-          <section className="grid w-full items-center gap-1.5">
-            <label className="text-sm" htmlFor="product">
+        <div className='mt-4 w-full'>
+          <section className='grid w-full items-center gap-1.5'>
+            <label className='text-sm' htmlFor='product'>
               Tên sản phẩm
             </label>
             <Input
-              className="w-full"
-              type="text"
-              id="product"
-              placeholder="Nhập tên sản phẩm"
+              className='w-full'
+              type='text'
+              id='product'
+              placeholder='Nhập tên sản phẩm'
             />
           </section>
-          <section className="grid grid-cols-2 w-full items-center mt-6 gap-6">
+          <section className='grid grid-cols-2 w-full items-center mt-6 gap-6'>
             <div>
-              <label className="text-sm" htmlFor="provider">
+              <label className='text-sm' htmlFor='provider'>
                 Nhà cung cấp
               </label>
               <Select>
-                <SelectTrigger className="">
-                  <SelectValue placeholder="Chọn nhà cung cấp..." />
+                <SelectTrigger className=''>
+                  <SelectValue placeholder='Chọn nhà cung cấp...' />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Nhà cung cấp</SelectLabel>
-                    {provider.map((item) => (
+                    {provider.map(item => (
                       <SelectItem key={item.value} value={item.value}>
                         {item.label}
                       </SelectItem>
@@ -168,17 +177,17 @@ export function ProductAddPage() {
               </Select>
             </div>
             <div>
-              <label className="text-sm" htmlFor="provider">
+              <label className='text-sm' htmlFor='provider'>
                 Loại
               </label>
               <Select>
-                <SelectTrigger className="">
-                  <SelectValue placeholder="Chọn loại..." />
+                <SelectTrigger className=''>
+                  <SelectValue placeholder='Chọn loại...' />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Loại</SelectLabel>
-                    {labels.map((item) => (
+                    {labels.map(item => (
                       <SelectItem key={item.value} value={item.value}>
                         {item.label}
                       </SelectItem>
@@ -188,34 +197,34 @@ export function ProductAddPage() {
               </Select>
             </div>
           </section>
-          <section className="mt-6">
-            <label className="text-sm" htmlFor="description">
+          <section className='mt-6'>
+            <label className='text-sm' htmlFor='description'>
               Mô tả sản phẩm
             </label>
             <TextEditor content={value} editContent={editContentState} />
           </section>
-          <section className="grid w-full items-center gap-1.5 mt-6">
-            <label className="text-sm" htmlFor="trichdan">
+          <section className='grid w-full items-center gap-1.5 mt-6'>
+            <label className='text-sm' htmlFor='trichdan'>
               Trích dẫn
             </label>
             <Input
-              className="w-full"
-              type="text"
-              id="trichdan"
-              placeholder="Trích dẫn sản phẩm"
+              className='w-full'
+              type='text'
+              id='trichdan'
+              placeholder='Trích dẫn sản phẩm'
             />
           </section>
         </div>
       </section>
 
-      <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
-        <div className="flex w-full mb-2 items-center">
-          <p className="font-bold">Hình ảnh sản phẩm</p>
+      <section className='py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md'>
+        <div className='flex w-full mb-2 items-center'>
+          <p className='font-bold'>Hình ảnh sản phẩm</p>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <div>
-                  <CircleHelp className="ml-1 text-blue-500" size={18} />
+                  <CircleHelp className='ml-1 text-blue-500' size={18} />
                 </div>
               </TooltipTrigger>
               <TooltipContent>
@@ -229,37 +238,37 @@ export function ProductAddPage() {
         </div>
         <Separator />
 
-        <div className="mt-6 flex justify-center items-center">
+        <div className='mt-6 flex justify-center items-center'>
           <label
-            htmlFor="file-upload"
-            role="region"
+            htmlFor='file-upload'
+            role='region'
             onDrop={handleDrop}
-            onDragOver={(e) => e.preventDefault()} // Essential for drop to work
+            onDragOver={e => e.preventDefault()} // Essential for drop to work
             style={{
-              border: "1px dashed #ccc",
-              padding: "20px",
-              cursor: "pointer",
-              display: "block", // To make the label take up the full width
+              border: '1px dashed #ccc',
+              padding: '20px',
+              cursor: 'pointer',
+              display: 'block', // To make the label take up the full width
               borderRadius: 10,
-              width: "100%",
+              width: '100%'
             }}
           >
             <input
-              type="file"
-              id="file-upload"
-              accept="image/*"
+              type='file'
+              id='file-upload'
+              accept='image/*'
               multiple // Allow multiple file selection if needed
               onChange={handleFileInputChange}
-              style={{ display: "none" }} // Hide the default file input
+              style={{ display: 'none' }} // Hide the default file input
             />
-            <div className="w-full flex flex-col items-center justify-center h-[8rem]">
+            <div className='w-full flex flex-col items-center justify-center h-[8rem]'>
               <div>
                 <ImageUp size={48} />
               </div>
               <div>
-                <span className="text-blue-500">Kéo</span> và{" "}
-                <span className="text-blue-500">Thả</span> files vào đây, hoặc{" "}
-                <span className="text-blue-500">Click</span> để chọn files.
+                <span className='text-blue-500'>Kéo</span> và{' '}
+                <span className='text-blue-500'>Thả</span> files vào đây, hoặc{' '}
+                <span className='text-blue-500'>Click</span> để chọn files.
               </div>
             </div>
             {product.imgFile.length > 0 && (
@@ -273,65 +282,65 @@ export function ProductAddPage() {
         </div>
       </section>
 
-      <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
-        <div className="flex w-full mb-2 items-center">Giá sản phẩm</div>
+      <section className='py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md'>
+        <div className='flex w-full mb-2 items-center'>Giá sản phẩm</div>
         <Separator />
-        <div className="grid grid-cols-2 gap-8 mt-4">
-          <InputWithTooltip
-            label="Giá bán"
-            tooltipText="Số tiền khách hàng cần thanh toán"
+        <div className='grid grid-cols-2 gap-8 mt-4'>
+          <InputLabel
+            label='Giá bán'
+            tooltipText='Số tiền khách hàng cần thanh toán'
             value={product.comparePrice}
-            onBlur={(e) => handleBlur(e, "comparePrice")}
-            onFocus={() => handleFocus("comparePrice")}
-            onChange={(e) =>
+            onBlur={e => handleBlur(e, 'comparePrice')}
+            onFocus={() => handleFocus('comparePrice')}
+            onChange={e =>
               setProduct({ ...product, comparePrice: e.target.value })
             }
-            id="compare-price"
-            placeholder="0 đ"
+            id='compare-price'
+            placeholder='0 đ'
           />
 
-          <InputWithTooltip
-            label="Giá so sánh"
-            tooltipText="Số tiền chưa giảm giá, thể hiện giá trị giảm giá, ưu đãi cho
-                    khách hàng"
+          <InputLabel
+            label='Giá so sánh'
+            tooltipText='Số tiền chưa giảm giá, thể hiện giá trị giảm giá, ưu đãi cho
+                    khách hàng'
             value={product.sellPrice}
-            onBlur={(e) => handleBlur(e, "sellPrice")}
-            onFocus={() => handleFocus("sellPrice")}
-            onChange={(e) =>
+            onBlur={e => handleBlur(e, 'sellPrice')}
+            onFocus={() => handleFocus('sellPrice')}
+            onChange={e =>
               setProduct({ ...product, sellPrice: e.target.value })
             }
-            id="compare-price"
-            placeholder="0 đ"
+            id='compare-price'
+            placeholder='0 đ'
           />
         </div>
       </section>
 
-      <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
-        <div className="flex w-full mb-2 items-center">Đơn vị tính</div>
+      <section className='py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md'>
+        <div className='flex w-full mb-2 items-center'>Đơn vị tính</div>
         <Separator />
-        <div className="flex items-center space-x-2 mt-4">
+        <div className='flex items-center space-x-2 mt-4'>
           <Checkbox
-            id="unit"
+            id='unit'
             checked={isMultiUnit}
             onCheckedChange={() => setIsMultiUnit(!isMultiUnit)}
           />
           <label
-            htmlFor="unit"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            htmlFor='unit'
+            className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
             Biến thể có nhiều đơn vị tính (ví dụ: lon, lốc, thùng...)
           </label>
         </div>
         {isMultiUnit && (
-          <InputWithTooltip
-            className="mt-4"
-            label="Đơn vị cơ bản"
-            placeholder="0"
-            type="number"
-            tooltipText={"Đơn vị nhỏ nhất của sản phẩm như lon, hộp..."}
+          <InputLabel
+            className='mt-4'
+            label='Đơn vị cơ bản'
+            placeholder='0'
+            type='number'
+            tooltipText={'Đơn vị nhỏ nhất của sản phẩm như lon, hộp...'}
             value={product.unit.toString()}
-            id="unit"
-            onChange={(e) => setProduct({ ...product, unit: +e.target.value })}
+            id='unit'
+            onChange={e => setProduct({ ...product, unit: +e.target.value })}
           />
         )}
       </section>
@@ -341,14 +350,63 @@ export function ProductAddPage() {
         <Separator />
       </section> */}
 
-      <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
-        <div className="flex w-full mb-2 items-center justify-between">
+      <section className='py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md'>
+        <div className='flex w-full mb-2 items-center justify-between'>
           <p>Tối ưu SEO</p>
-          <p>Chỉnh sửa SEO</p>
+          <Button onClick={() => setToggleSEO(!toggleSEO)}>
+            Chỉnh sửa SEO
+          </Button>
         </div>
         <Separator />
+        <p className='mt-4'>
+          Thiết lập các thẻ mô tả giúp khách hàng dễ dàng tìm thấy danh mục này
+          trên công cụ tìm kiếm như Google
+        </p>
+        <p className='text-xl collection-seo--preview-title mt-1'>
+          {fieldSEO.titlePage}
+        </p>
+        <p className='text-sm collection-seo--preview-mota mt-1'>
+          {fieldSEO.description}
+        </p>
+        <p className='text-xs collection-seo--preview-url mt-1'>
+          {fieldSEO.url}
+        </p>
+        {toggleSEO && (
+          <div className='mt-4'>
+            <InputLabel
+              id='title-page'
+              placeholder='Tiêu đề trang'
+              label='Tiêu đề trang'
+              value={fieldSEO.titlePage}
+              onChange={e =>
+                setFieldSEO({ ...fieldSEO, titlePage: e.target.value })
+              }
+            />
+            <InputLabel
+              className='mt-4'
+              id='description-page'
+              placeholder='Mô tả trang'
+              label='Mô tả trang'
+              value={fieldSEO.description}
+              onChange={e =>
+                setFieldSEO({ ...fieldSEO, description: e.target.value })
+              }
+            />
+            <InputLabel
+              className='mt-4'
+              id='link-page'
+              placeholder='Đường dẫn'
+              label='Đường dẫn'
+              value={fieldSEO.url}
+              onChange={e => setFieldSEO({ ...fieldSEO, url: e.target.value })}
+            />
+          </div>
+        )}
       </section>
+      <div className=' flex justify-end'>
+        <Button className='my-4'>Lưu</Button>
+      </div>
     </div>
-  );
+  )
 }
-export default ProductAddPage;
+export default ProductAddPage

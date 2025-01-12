@@ -19,7 +19,7 @@ import {
 
 import { labels } from "../../../lib/mock/label";
 import { Button } from "@/components/ui/button";
-import Product from "@/lib/mock/types";
+import Product from "@/lib/types/types";
 import productsService from "@/services/products.service";
 
 interface DataTableRowActionsProps<TData> {

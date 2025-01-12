@@ -9,7 +9,7 @@ import { DataTableViewOptions } from "./data-table-view-option"
 import { labels, provider } from "../../../lib/mock/label"
 import { useEffect, useState } from "react"
 import productsService from "@/services/products.service"
-import { Category } from "@/lib/mock/types"
+import { Category } from "@/lib/types/types"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>

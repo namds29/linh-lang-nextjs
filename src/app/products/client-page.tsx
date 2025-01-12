@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button'
 import { DataTable } from './components/data-table-config'
 import { useRouter } from 'next/navigation'
-import Product from '@/lib/mock/types'
+import Product from '@/lib/types/types'
 
 interface ClientDataTableProps {
   columns: any
