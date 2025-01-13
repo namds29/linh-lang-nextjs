@@ -1,7 +1,6 @@
-import { api, ApiResponse } from "@/lib/api.config";
+import { api } from "@/lib/api.config";
 import Product, { Category, ProductDetail } from "@/lib/types/types";
 import { API_ENDPOINTS, API_URL } from "@/lib/routes/api";
-import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 const fetchProduct = async () => {
   if (API_URL) {
@@ -44,7 +43,6 @@ const createImagesProduct = async (
   body: File[]
 ): Promise<any> => {
   try {
-    console.log(body);
     const formData = new FormData();
     body.forEach((file, index) => {
       formData.append("files", file); // 'file0', 'file1', etc.
@@ -68,6 +66,9 @@ const getDetailProduct = async (productId: string): Promise<ProductDetail> => {
   const res = await api.get(API_ENDPOINTS.PRODUCT + "/" + productId);
   return res.data.payload as ProductDetail;
 };
+const updateProduct = async ({productId, body}: {productId: string, body: any}): Promise<any> =>{
+  const res = await api.post(`${API_ENDPOINTS.PRODUCT}/${productId}`, body)
+}
 export default {
   fetchProduct,
   fetchCategories,
@@ -75,4 +76,5 @@ export default {
   createProduct,
   createImagesProduct,
   getDetailProduct,
+  updateProduct
 };
