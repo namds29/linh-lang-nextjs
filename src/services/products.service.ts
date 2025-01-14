@@ -66,8 +66,9 @@ const getDetailProduct = async (productId: string): Promise<ProductDetail> => {
   const res = await api.get(API_ENDPOINTS.PRODUCT + "/" + productId);
   return res.data.payload as ProductDetail;
 };
-const updateProduct = async ({productId, body}: {productId: string, body: any}): Promise<any> =>{
-  const res = await api.post(`${API_ENDPOINTS.PRODUCT}/${productId}`, body)
+const updateProduct = async (productId: string, body: any): Promise<any> =>{
+  const res = await api.put(`${API_ENDPOINTS.PRODUCT}/${productId}`, body)
+  return res
 }
 export default {
   fetchProduct,
