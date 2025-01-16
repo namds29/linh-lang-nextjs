@@ -9,7 +9,7 @@ import { DataTableViewOptions } from "./data-table-view-option"
 import { labels, provider } from "../../../lib/mock/label"
 import { useEffect, useState } from "react"
 import productsService from "@/services/products.service"
-import { Category } from "@/lib/types/types"
+import { Category } from "@/lib/types/products.type"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -46,13 +46,7 @@ export function DataTableToolbar<TData>({
             options={listCategories}
           />
         )}
-        {/* {table.getColumn("provider") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("provider")}
-            title="Nhà cung cấp"
-            options={provider}
-          />
-        )} */}
+
         {isFiltered && (
           <Button
             variant="ghost"

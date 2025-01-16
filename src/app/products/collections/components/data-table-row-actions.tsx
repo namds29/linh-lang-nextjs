@@ -16,8 +16,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import { labels } from "../../../lib/mock/label";
 import { Button } from "@/components/ui/button";
 import Product from "@/lib/types/products.type";
 import productsService from "@/services/products.service";

@@ -1,31 +1,29 @@
-"use client"
+"use client";
 
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu"
-import { Table } from "@tanstack/react-table"
-import { Settings2 } from "lucide-react"
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { Table } from "@tanstack/react-table";
+import { Settings2 } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 interface DataTableViewOptionsProps<TData> {
-  table: Table<TData>
+  table: Table<TData>;
 }
 
 export function DataTableViewOptions<TData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
   const labelColumn = {
-    name: "Tên sản phẩm",
-    category: "Loại",
-    price: "Giá bán",
-    provider: "Nhà cung cấp"
-  }
+    name: "Tên nhóm",
+    description: "Mô tả",
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -48,6 +46,8 @@ export function DataTableViewOptions<TData>({
               typeof column.accessorFn !== "undefined" && column.getCanHide()
           )
           .map((column) => {
+            console.log(column.id);
+            
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}
@@ -57,9 +57,9 @@ export function DataTableViewOptions<TData>({
               >
                 {labelColumn[column.id as keyof typeof labelColumn]}
               </DropdownMenuCheckboxItem>
-            )
+            );
           })}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

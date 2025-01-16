@@ -53,7 +53,7 @@ const data = {
         },
         {
           title: "Nhóm sản phẩm",
-          url: "/products/categories",
+          url: "/products/collections",
         },
         {
           title: "Tồn kho",

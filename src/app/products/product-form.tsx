@@ -25,10 +25,10 @@ import { formatCurrency } from "@/lib/pipes/currency";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { InputLabel } from "@/components/ui/input-label";
-import { ProductDetail } from "@/lib/types/types";
+import { ProductDetail } from "@/lib/types/products.type";
 import productsService from "@/services/products.service";
 import { useToast } from "@/hooks/use-toast";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 
 type Product = {
   name: string;
@@ -84,17 +84,7 @@ export function ProductForm() {
       setProduct({ ...product, [key]: formattedValue });
     }
   };
-  // const handleDrop = (e: any) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
 
-  //   if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-  //     console.log(e);
-  //     setProduct({ ...product, imgFile: Array.from(e.dataTransfer.files) });
-  //     // setFiles(Array.from(e.dataTransfer.files));
-  //     // ... handle the uploaded files (e.g., upload to server) ...
-  //   }
-  // };
   const handleFocus = (key: keyof Product) => {
     setProduct({
       ...product,
@@ -105,8 +95,8 @@ export function ProductForm() {
     if (e.target.files) {
       const listFile: File[] = Array.from(e.target.files);
       const listUrlImg = listFile.map((file: any) => URL.createObjectURL(file));
+
       setListImg({ files: listFile, urls: listUrlImg });
-      setProduct({ ...product, imgFile: listFile });
     }
   };
   const handleEachFileChange = (e: any, index: number) => {
@@ -124,13 +114,26 @@ export function ProductForm() {
       });
       setProduct({
         ...product,
-        imgFile: newFiles,
+        imgFile: product.imgFile.filter((_: any, i: number) => i !== index),
       });
     }
   };
-  const handleSaveForm = async () => {
-    console.log(isParams);
 
+  const handleDeleteImg = (index: number) => {
+    const deletedFiles = listImg.files.filter((_, i) => i !== index);
+    console.log(deletedFiles);
+    if (isParams) {
+      setProduct({
+        ...product,
+        imgFile: product.imgFile.filter((_: any, i: number) => i !== index),
+      });
+    }
+    setListImg({
+      files: listImg.files.filter((_, i) => i !== index),
+      urls: listImg.urls.filter((_, i) => i !== index),
+    });
+  };
+  const handleSaveForm = async () => {
     const params: ProductDetail = {
       name: product.name,
       provider: {
@@ -153,8 +156,7 @@ export function ProductForm() {
         link: fieldSEO.url ?? "",
       },
     };
-    console.log(params);
-    
+
     if (!isParams) {
       const res = await productsService.createProduct(params);
       if (res.status >= 200 && res.status < 400) {
@@ -168,8 +170,8 @@ export function ProductForm() {
             res.data.payload,
             listImg.files
           );
-          console.log(resCreateImg);
         }
+        redirect("/products");
       } else {
         toast({
           variant: "destructive",
@@ -191,8 +193,8 @@ export function ProductForm() {
             res.data.payload,
             listImg.files
           );
-          console.log(resCreateImg);
         }
+        redirect("/products");
       } else {
         toast({
           variant: "destructive",
@@ -201,18 +203,6 @@ export function ProductForm() {
         });
       }
     }
-  };
-  const handleDeleteImg = (index: number) => {
-    const deletedFiles = listImg.files.filter((_, i) => i !== index);
-    console.log(deletedFiles);
-    if(isParams){
-      setProduct({...product, imgFile: product.imgFile.filter((_: any,i: number)=> i !== index)})
-    }
-    console.log(product);
-    setListImg({
-      files: listImg.files.filter((_, i) => i !== index),
-      urls: listImg.urls.filter((_, i) => i !== index),
-    });
   };
   useEffect(() => {
     if (isParams) {
@@ -229,7 +219,7 @@ export function ProductForm() {
           comparePrice: res.comparePrice ? res.comparePrice.toString() : "",
           sellPrice: res.price.toString(),
           description: res.description,
-          imgFile: res.images
+          imgFile: res.images,
         });
         setFieldSEO({
           ...fieldSEO,

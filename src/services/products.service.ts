@@ -1,5 +1,5 @@
 import { api } from "@/lib/api.config";
-import Product, { Category, ProductDetail } from "@/lib/types/types";
+import Product, { Category, ProductDetail } from "@/lib/types/products.type";
 import { API_ENDPOINTS, API_URL } from "@/lib/routes/api";
 import { redirect } from "next/navigation";
 const fetchProduct = async () => {
