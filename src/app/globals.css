@@ -120,3 +120,6 @@ body {
 .collection-seo--preview-url {
   color: #545454;
 }
+.filter-brightness:hover{
+  filter: brightness(0.9);
+}

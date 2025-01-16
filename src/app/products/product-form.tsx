@@ -70,7 +70,7 @@ export function ProductForm() {
   const [toggleSEO, setToggleSEO] = useState<boolean>(false);
   const { toast } = useToast();
   const paramsUrl = useParams<{ id: string }>();
-  const isParams = Object.keys(paramsUrl);
+  const isParams = Object.keys(paramsUrl).length;
 
   const editContentState = (value: any) => {
     setValue(value);
@@ -84,17 +84,17 @@ export function ProductForm() {
       setProduct({ ...product, [key]: formattedValue });
     }
   };
-  const handleDrop = (e: any) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // const handleDrop = (e: any) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
 
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      console.log(e);
-      setProduct({ ...product, imgFile: Array.from(e.dataTransfer.files) });
-      // setFiles(Array.from(e.dataTransfer.files));
-      // ... handle the uploaded files (e.g., upload to server) ...
-    }
-  };
+  //   if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+  //     console.log(e);
+  //     setProduct({ ...product, imgFile: Array.from(e.dataTransfer.files) });
+  //     // setFiles(Array.from(e.dataTransfer.files));
+  //     // ... handle the uploaded files (e.g., upload to server) ...
+  //   }
+  // };
   const handleFocus = (key: keyof Product) => {
     setProduct({
       ...product,
@@ -109,7 +109,28 @@ export function ProductForm() {
       setProduct({ ...product, imgFile: listFile });
     }
   };
+  const handleEachFileChange = (e: any, index: number) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const newUrl = URL.createObjectURL(file);
+      const newFiles = [...listImg.files];
+      newFiles[index] = file;
+      const newUrls = [...listImg.urls];
+      newUrls[index] = newUrl;
+      setListImg({
+        files: newFiles,
+        urls: newUrls,
+      });
+      setProduct({
+        ...product,
+        imgFile: newFiles,
+      });
+    }
+  };
   const handleSaveForm = async () => {
+    console.log(isParams);
+
     const params: ProductDetail = {
       name: product.name,
       provider: {
@@ -119,7 +140,7 @@ export function ProductForm() {
         name: product.category,
       },
       description: product.description,
-      // images: product.imgFile,
+      images: isParams ? product.imgFile : undefined,
       price: Number(
         product["sellPrice"].replace(/đ/, "").replace(".", "").trim()
       ),
@@ -132,6 +153,8 @@ export function ProductForm() {
         link: fieldSEO.url ?? "",
       },
     };
+    console.log(params);
+    
     if (!isParams) {
       const res = await productsService.createProduct(params);
       if (res.status >= 200 && res.status < 400) {
@@ -155,6 +178,7 @@ export function ProductForm() {
         });
       }
     } else {
+      // if (listImg.files.length > 0) params.images = listImg.files;
       const res = await productsService.updateProduct(paramsUrl.id, params);
       if (res.status >= 200 && res.status < 400) {
         toast({
@@ -178,9 +202,20 @@ export function ProductForm() {
       }
     }
   };
-
+  const handleDeleteImg = (index: number) => {
+    const deletedFiles = listImg.files.filter((_, i) => i !== index);
+    console.log(deletedFiles);
+    if(isParams){
+      setProduct({...product, imgFile: product.imgFile.filter((_: any,i: number)=> i !== index)})
+    }
+    console.log(product);
+    setListImg({
+      files: listImg.files.filter((_, i) => i !== index),
+      urls: listImg.urls.filter((_, i) => i !== index),
+    });
+  };
   useEffect(() => {
-    if (isParams.length) {
+    if (isParams) {
       const handleGetDetailProduct = async () => {
         const res: ProductDetail = await productsService.getDetailProduct(
           paramsUrl.id
@@ -194,6 +229,7 @@ export function ProductForm() {
           comparePrice: res.comparePrice ? res.comparePrice.toString() : "",
           sellPrice: res.price.toString(),
           description: res.description,
+          imgFile: res.images
         });
         setFieldSEO({
           ...fieldSEO,
@@ -203,7 +239,10 @@ export function ProductForm() {
         });
         if (res.description) setValue(res.description);
         if (res.images && res.images.length > 0) {
-          setListImg({ ...listImg, urls: res.images.map((item) => item.url) });
+          setListImg({
+            ...listImg,
+            urls: res.images.map((item) => item.url),
+          });
         }
       };
       handleGetDetailProduct();
@@ -212,7 +251,7 @@ export function ProductForm() {
   return (
     <div className="py-4 w-[80%]">
       <div className="text-2xl font-bold text-red-400">
-        {isParams.length ? "Sửa sản phẩm" : "Tạo sản phẩm"}
+        {isParams ? "Sửa sản phẩm" : "Tạo sản phẩm"}
       </div>
       <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 min-h-[70vh] rounded-md">
         <p className="font-bold">Thông tin chung</p>
@@ -328,29 +367,28 @@ export function ProductForm() {
         <Separator />
 
         <div className="mt-6 flex justify-center items-center bg-gray-100">
-          <label
-            htmlFor="file-upload"
-            role="region"
-            onDrop={handleDrop}
-            onDragOver={(e) => e.preventDefault()} // Essential for drop to work
-            style={{
-              border: "1px dashed #ccc",
-              padding: "20px",
-              cursor: "pointer",
-              display: "block", // To make the label take up the full width
-              borderRadius: 10,
-              width: "100%",
-            }}
-          >
-            <input
-              type="file"
-              id="file-upload"
-              accept="image/*"
-              multiple // Allow multiple file selection if needed
-              onChange={handleFileInputChange}
-              style={{ display: "none" }} // Hide the default file input
-            />
-            {!listImg.urls.length && (
+          {!listImg.urls.length && (
+            <label
+              htmlFor="file-upload"
+              role="region"
+              onDragOver={(e) => e.preventDefault()} // Essential for drop to work
+              style={{
+                border: "1px dashed #ccc",
+                padding: "20px",
+                cursor: "pointer",
+                display: "block", // To make the label take up the full width
+                borderRadius: 10,
+                width: "100%",
+              }}
+            >
+              <input
+                type="file"
+                id="file-upload"
+                accept="image/*"
+                multiple // Allow multiple file selection if needed
+                onChange={handleFileInputChange}
+                style={{ display: "none" }} // Hide the default file input
+              />
               <div className="w-full flex flex-col items-center justify-center h-[8rem]">
                 <div>
                   <ImageUp size={48} />
@@ -361,21 +399,49 @@ export function ProductForm() {
                   <span className="text-blue-500">Click</span> để chọn files.
                 </div>
               </div>
-            )}
+            </label>
+          )}
+          {listImg.urls.length > 0 && (
             <div className="flex w-full gap-4">
-              {listImg.urls.length > 0 &&
-                listImg.urls.map((img, index) => (
-                  <div key={img + index} className="w-full">
+              {listImg.urls.map((img, index) => (
+                <label
+                  key={img + index}
+                  htmlFor={`file-upload-${index}`}
+                  role="region"
+                  style={{
+                    border: "1px dashed #ccc",
+                    padding: "20px",
+                    cursor: "pointer",
+                    display: "block", // To make the label take up the full width
+                    borderRadius: 10,
+                    width: "100%",
+                  }}
+                >
+                  <input
+                    type="file"
+                    id={`file-upload-${index}`}
+                    accept="image/*"
+                    onChange={(event) => handleEachFileChange(event, index)}
+                    style={{ display: "none" }} // Hide the default file input
+                  />
+                  <div className="w-full relative">
+                    <button
+                      className="absolute z-10 right-[-12px] top-[-12px] bg-red-400 w-6 h-6 text-white rounded-full"
+                      onClick={() => handleDeleteImg(index)}
+                    >
+                      x
+                    </button>
                     <img
-                      className="w-full"
+                      className="w-full filter-brightness"
                       key={img + index}
                       src={img}
                       alt=""
                     />
                   </div>
-                ))}
+                </label>
+              ))}
             </div>
-          </label>
+          )}
         </div>
       </section>
 
