@@ -11,7 +11,7 @@ interface ClientDataTableProps {
 const ClientPage = ({columns, data}: ClientDataTableProps) => {
   const navigate = useRouter()
   const handleAddProduct = () => {
-    navigate.push('/products/add')
+    navigate.push('/products/collections/add')
   }
 
   return (
