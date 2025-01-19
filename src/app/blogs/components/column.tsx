@@ -66,7 +66,7 @@ export const columns: ColumnDef<BlogPost>[] = [
   {
     accessorKey: 'tag',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Danh mục' />
+      <DataTableColumnHeader column={column} title='Tag' />
     ),
     cell: ({ row }) => {
       const rowData = row.original.tag
