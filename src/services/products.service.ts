@@ -60,7 +60,7 @@ const createImagesProduct = async (
 };
 
 const getDetailProduct = async (productId: string): Promise<ProductDetail> => {
-  const res = await api.get(API_ENDPOINTS.PRODUCT + "/" + productId);
+  const res = await api.get(API_URL + API_ENDPOINTS.PRODUCT + "/" + productId);
   return res.data.payload as ProductDetail;
 };
 const updateProduct = async (productId: string, body: any): Promise<any> =>{

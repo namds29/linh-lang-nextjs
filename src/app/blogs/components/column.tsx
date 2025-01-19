@@ -70,11 +70,11 @@ export const columns: ColumnDef<BlogPost>[] = [
     ),
     cell: ({ row }) => {
       const rowData = row.original.tag
-      const listTags = rowData.split(',')
+      const listTags = rowData ? rowData.split(',') : []
 
       return (
         <div>
-          {listTags.length > 0 &&
+          {
             listTags.map((item: string, index: number) => (
               <div key={item + index} className='mt-2'>
                 <Badge variant='outline'>{item}</Badge>

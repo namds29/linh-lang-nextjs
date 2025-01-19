@@ -36,26 +36,26 @@ type SEO = {
   url?: string;
 };
 const defaultBlog: ParamsBlog = {
-  title: '',
-  content: '',
-  createUser: '',
-  blogCategory: '',
-  blogQuote: '',
-  seoTitle: '',
-  seoDescription: '',
-  seoUrl: '',
-  canonicalUrl: '',
-  metaIndex: '',
-  metaFollow: '',
-  displayTime: '',
+  title: "",
+  content: "",
+  createUser: "",
+  blogCategory: "",
+  blogQuote: "",
+  seoTitle: "",
+  seoDescription: "",
+  seoUrl: "",
+  canonicalUrl: "",
+  metaIndex: "",
+  metaFollow: "",
+  displayTime: "",
   isDisplay: false,
-  image: '',
-  imageDescription: '',
-  tag: '',
+  image: "",
+  imageDescription: "",
+  tag: "",
   status: 0,
-  pageInterface: '',
-  createTime: '',
-  updateTime: '',
+  pageInterface: "",
+  createTime: "",
+  updateTime: "",
 };
 export function BlogForm() {
   const [value, setValue] = useState("");
@@ -128,11 +128,14 @@ export function BlogForm() {
     });
   };
   const handleSaveForm = async () => {
+    console.log(blog?.displayTime);
+    
     const params: ParamsBlog = {
       title: blog?.title,
       blogCategory: blog?.blogCategory,
       blogQuote: blog?.blogQuote,
       content: blog?.content,
+      displayTime: blog?.displayTime,
       // images: isParams ? product.imgFile : undefined,
       seoTitle: fieldSEO.titlePage ?? "",
       seoDescription: fieldSEO.description ?? "",
@@ -220,136 +223,103 @@ export function BlogForm() {
     }
   }, [paramsUrl.id]);
   return (
-    <div className="py-4 w-[80%]">
+    <>
       <div className="text-2xl font-bold text-red-400">
         {isParams ? "Sửa sản phẩm" : "Thêm bài đăng trên blog"}
       </div>
-      <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 min-h-[70vh] rounded-md">
-        <p className="font-bold">Thông tin chung</p>
-        <Separator />
-        <div className="mt-4 w-full">
-          <section className="grid w-full items-center gap-1.5">
-            <label className="text-sm" htmlFor="title">
-              Tiêu đề<span className="text-red-500">*</span>
-            </label>
-            <Input
-              required
-              className="w-full"
-              type="text"
-              id="title"
-              placeholder="Tiêu đề"
-              value={blog?.title}
-              onChange={(e) => setBlog({ ...blog, title: e.target.value })}
-            />
-          </section>
+      <div className="mt-8 flex gap-8">
+        <div className="w-[70%]">
+          <section className="py-4 px-6 shadow-inner bg-white box-shadow-style  min-h-[70vh] rounded-md">
+            <p className="font-bold">Thông tin chung</p>
+            <Separator />
+            <div className="mt-4 w-full">
+              <section className="grid w-full items-center gap-1.5">
+                <label className="text-sm" htmlFor="title">
+                  Tiêu đề<span className="text-red-500">*</span>
+                </label>
+                <Input
+                  required
+                  className="w-full"
+                  type="text"
+                  id="title"
+                  placeholder="Tiêu đề"
+                  value={blog?.title}
+                  onChange={(e) => setBlog({ ...blog, title: e.target.value })}
+                />
+              </section>
 
-          <section className="mt-6">
-            <label className="text-sm" htmlFor="description">
-              Nội dung
-            </label>
-            <TextEditor content={value} editContent={editContentState} />
-          </section>
+              <section className="mt-6">
+                <label className="text-sm" htmlFor="description">
+                  Nội dung
+                </label>
+                <TextEditor content={value} editContent={editContentState} />
+              </section>
 
-          <section className="grid grid-cols-2 w-full items-center mt-6 gap-6">
-            <div>
-              <label className="text-sm" htmlFor="createUser">
-                Người viết<span className="text-red-500">*</span>
-              </label>
-              <Input
-                required
-                className="w-full"
-                type="text"
-                id="createUser"
-                placeholder="Người tạo"
-                value={blog?.createUser}
-                onChange={(e) =>
-                  setBlog({ ...blog, createUser: e.target.value })
-                }
-              />
+              <section className="grid grid-cols-2 w-full items-center mt-6 gap-6">
+                <div>
+                  <label className="text-sm" htmlFor="createUser">
+                    Người viết<span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    required
+                    className="w-full"
+                    type="text"
+                    id="createUser"
+                    placeholder="Người tạo"
+                    value={blog?.createUser}
+                    onChange={(e) =>
+                      setBlog({ ...blog, createUser: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="text-sm" htmlFor="category">
+                    Danh mục blog<span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    required
+                    className="w-full"
+                    type="text"
+                    id="category"
+                    placeholder="Người tạo"
+                    value={blog?.blogCategory}
+                    onChange={(e) =>
+                      setBlog({ ...blog, blogCategory: e.target.value })
+                    }
+                  />
+                </div>
+              </section>
             </div>
-            <div>
-              <label className="text-sm" htmlFor="category">
-                Danh mục blog<span className="text-red-500">*</span>
-              </label>
-              <Input
-                required
-                className="w-full"
-                type="text"
-                id="category"
-                placeholder="Người tạo"
-                value={blog?.blogCategory}
-                onChange={(e) =>
-                  setBlog({ ...blog, blogCategory: e.target.value })
-                }
-              />
-            </div>
           </section>
-        </div>
-      </section>
 
-      <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
-        <div className="flex w-full mb-2 items-center">
-          <p className="font-bold">Hình ảnh sản phẩm</p>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div>
-                  <CircleHelp className="ml-1 text-blue-500" size={18} />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>
-                  Ảnh định dạng jpg, jpeg, png, gif tỉ lệ 1:1 (ảnh vuông) và độ
-                  phân giải 2048px x 2048px để chất lượng hình ảnh tốt nhất
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-        <Separator />
+          <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
+            <div className="flex w-full mb-2 items-center">
+              <p className="font-bold">Hình ảnh sản phẩm</p>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <CircleHelp className="ml-1 text-blue-500" size={18} />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      Ảnh định dạng jpg, jpeg, png, gif tỉ lệ 1:1 (ảnh vuông) và
+                      độ phân giải 2048px x 2048px để chất lượng hình ảnh tốt
+                      nhất
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            <Separator />
 
-        <div className="mt-6 flex justify-center items-center bg-gray-100">
-          {!listImg.urls.length && (
-            <label
-              htmlFor="file-upload"
-              role="region"
-              onDragOver={(e) => e.preventDefault()} // Essential for drop to work
-              style={{
-                border: "1px dashed #ccc",
-                padding: "20px",
-                cursor: "pointer",
-                display: "block", // To make the label take up the full width
-                borderRadius: 10,
-                width: "100%",
-              }}
-            >
-              <input
-                type="file"
-                id="file-upload"
-                accept="image/*"
-                multiple // Allow multiple file selection if needed
-                onChange={handleFileInputChange}
-                style={{ display: "none" }} // Hide the default file input
-              />
-              <div className="w-full flex flex-col items-center justify-center h-[8rem]">
-                <div>
-                  <ImageUp size={48} />
-                </div>
-                <div>
-                  <span className="text-blue-500">Kéo</span> và{" "}
-                  <span className="text-blue-500">Thả</span> files vào đây, hoặc{" "}
-                  <span className="text-blue-500">Click</span> để chọn files.
-                </div>
-              </div>
-            </label>
-          )}
-          {listImg.urls.length > 0 && (
-            <div className="flex w-full gap-4">
-              {listImg.urls.map((img, index) => (
+            <div className="mt-6 flex justify-center items-center bg-gray-100">
+              {!listImg.urls.length && (
                 <label
-                  key={img + index}
-                  htmlFor={`file-upload-${index}`}
+                  htmlFor="file-upload"
                   role="region"
+                  onDragOver={(e) => e.preventDefault()} // Essential for drop to work
                   style={{
                     border: "1px dashed #ccc",
                     padding: "20px",
@@ -361,40 +331,77 @@ export function BlogForm() {
                 >
                   <input
                     type="file"
-                    id={`file-upload-${index}`}
+                    id="file-upload"
                     accept="image/*"
-                    onChange={(event) => handleEachFileChange(event, index)}
+                    multiple // Allow multiple file selection if needed
+                    onChange={handleFileInputChange}
                     style={{ display: "none" }} // Hide the default file input
                   />
-                  <div className="w-full relative">
-                    <button
-                      className="absolute z-10 right-[-12px] top-[-12px] bg-red-400 w-6 h-6 text-white rounded-full"
-                      onClick={() => handleDeleteImg(index)}
-                    >
-                      x
-                    </button>
-                    <img
-                      className="w-full filter-brightness"
-                      key={img + index}
-                      src={img}
-                      alt=""
-                    />
+                  <div className="w-full flex flex-col items-center justify-center h-[8rem]">
+                    <div>
+                      <ImageUp size={48} />
+                    </div>
+                    <div>
+                      <span className="text-blue-500">Kéo</span> và{" "}
+                      <span className="text-blue-500">Thả</span> files vào đây,
+                      hoặc <span className="text-blue-500">Click</span> để chọn
+                      files.
+                    </div>
                   </div>
                 </label>
-              ))}
+              )}
+              {listImg.urls.length > 0 && (
+                <div className="flex w-full gap-4">
+                  {listImg.urls.map((img, index) => (
+                    <label
+                      key={img + index}
+                      htmlFor={`file-upload-${index}`}
+                      role="region"
+                      style={{
+                        border: "1px dashed #ccc",
+                        padding: "20px",
+                        cursor: "pointer",
+                        display: "block", // To make the label take up the full width
+                        borderRadius: 10,
+                        width: "100%",
+                      }}
+                    >
+                      <input
+                        type="file"
+                        id={`file-upload-${index}`}
+                        accept="image/*"
+                        onChange={(event) => handleEachFileChange(event, index)}
+                        style={{ display: "none" }} // Hide the default file input
+                      />
+                      <div className="w-full relative">
+                        <button
+                          className="absolute z-10 right-[-12px] top-[-12px] bg-red-400 w-6 h-6 text-white rounded-full"
+                          onClick={() => handleDeleteImg(index)}
+                        >
+                          x
+                        </button>
+                        <img
+                          className="w-full filter-brightness"
+                          key={img + index}
+                          src={img}
+                          alt=""
+                        />
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </section>
+          </section>
 
-      <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md mt-6">
-        <label className="text-sm font-bold" htmlFor="description">
-          Trích dẫn
-        </label>
-        <TextEditor content={quote} editContent={editQuoteState} />
-      </section>
+          <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md mt-6">
+            <label className="text-sm font-bold" htmlFor="description">
+              Trích dẫn
+            </label>
+            <TextEditor content={quote} editContent={editQuoteState} />
+          </section>
 
-      {/* <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
+          {/* <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
         <div className="flex w-full mb-2 items-center">Đơn vị tính</div>
         <Separator />
         <div className="flex items-center space-x-2 mt-4">
@@ -424,73 +431,81 @@ export function BlogForm() {
         )}
       </section> */}
 
-      {/* <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
+          {/* <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
         <div className="flex w-full mb-2 items-center">Biến thể</div>
         <Separator />
       </section> */}
 
-      <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
-        <div className="flex w-full mb-2 items-center justify-between">
-          <p>Tối ưu SEO</p>
-          <Button onClick={() => setToggleSEO(!toggleSEO)}>
-            Chỉnh sửa SEO
-          </Button>
-        </div>
-        <Separator className="mb-4" />
-        {!(fieldSEO.titlePage || fieldSEO.description || fieldSEO.url) && (
-          <p>
-            Thiết lập các thẻ mô tả giúp khách hàng dễ dàng tìm thấy danh mục
-            này trên công cụ tìm kiếm như Google
-          </p>
-        )}
-        <p className="text-xl collection-seo--preview-title">
-          {fieldSEO.titlePage}
-        </p>
-        <p className="text-sm collection-seo--preview-mota mt-1">
-          {fieldSEO.description}
-        </p>
-        <p className="text-xs collection-seo--preview-url mt-1">
-          {fieldSEO.url}
-        </p>
-        {toggleSEO && (
-          <div className="mt-4">
-            <InputLabel
-              id="title-page"
-              placeholder="Tiêu đề trang"
-              label="Tiêu đề trang"
-              value={fieldSEO.titlePage ?? ""}
-              onChange={(e) =>
-                setFieldSEO({ ...fieldSEO, titlePage: e.target.value })
-              }
-            />
-            <InputLabel
-              className="mt-4"
-              id="description-page"
-              placeholder="Mô tả trang"
-              label="Mô tả trang"
-              value={fieldSEO.description ?? ""}
-              onChange={(e) =>
-                setFieldSEO({ ...fieldSEO, description: e.target.value })
-              }
-            />
-            <InputLabel
-              className="mt-4"
-              id="link-page"
-              placeholder="Đường dẫn"
-              label="Đường dẫn"
-              value={fieldSEO.url ?? ""}
-              onChange={(e) =>
-                setFieldSEO({ ...fieldSEO, url: e.target.value })
-              }
-            />
+          <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
+            <div className="flex w-full mb-2 items-center justify-between">
+              <p>Tối ưu SEO</p>
+              <Button onClick={() => setToggleSEO(!toggleSEO)}>
+                Chỉnh sửa SEO
+              </Button>
+            </div>
+            <Separator className="mb-4" />
+            {!(fieldSEO.titlePage || fieldSEO.description || fieldSEO.url) && (
+              <p>
+                Thiết lập các thẻ mô tả giúp khách hàng dễ dàng tìm thấy danh
+                mục này trên công cụ tìm kiếm như Google
+              </p>
+            )}
+            <p className="text-xl collection-seo--preview-title">
+              {fieldSEO.titlePage}
+            </p>
+            <p className="text-sm collection-seo--preview-mota mt-1">
+              {fieldSEO.description}
+            </p>
+            <p className="text-xs collection-seo--preview-url mt-1">
+              {fieldSEO.url}
+            </p>
+            {toggleSEO && (
+              <div className="mt-4">
+                <InputLabel
+                  id="title-page"
+                  placeholder="Tiêu đề trang"
+                  label="Tiêu đề trang"
+                  value={fieldSEO.titlePage ?? ""}
+                  onChange={(e) =>
+                    setFieldSEO({ ...fieldSEO, titlePage: e.target.value })
+                  }
+                />
+                <InputLabel
+                  className="mt-4"
+                  id="description-page"
+                  placeholder="Mô tả trang"
+                  label="Mô tả trang"
+                  value={fieldSEO.description ?? ""}
+                  onChange={(e) =>
+                    setFieldSEO({ ...fieldSEO, description: e.target.value })
+                  }
+                />
+                <InputLabel
+                  className="mt-4"
+                  id="link-page"
+                  placeholder="Đường dẫn"
+                  label="Đường dẫn"
+                  value={fieldSEO.url ?? ""}
+                  onChange={(e) =>
+                    setFieldSEO({ ...fieldSEO, url: e.target.value })
+                  }
+                />
+              </div>
+            )}
+          </section>
+          <div className=" flex justify-end">
+            <Button className="my-4" onClick={handleSaveForm}>
+              Lưu
+            </Button>
           </div>
-        )}
-      </section>
-      <div className=" flex justify-end">
-        <Button className="my-4" onClick={handleSaveForm}>
-          Lưu
-        </Button>
+        </div>
+        <div className="w-[30%]">
+          <div className="w-full py-4 px-6 shadow-inner bg-white box-shadow-style rounded-md ">
+            <p className="font-bold">Hiển thị</p>
+            <Input type="datetime-local" onChange={(e) => setBlog({...blog, displayTime: e.target.value})} />
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
