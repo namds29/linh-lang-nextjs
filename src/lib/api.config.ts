@@ -1,7 +1,3 @@
-// api.ts
-
-import { API_ENDPOINTS, API_URL } from "./routes/api";
-
 // Type definition for the request data
 export interface RequestData {
   [key: string]: any; // Replace with more specific types as needed
@@ -36,8 +32,10 @@ const fetchAPI = async <T>(
   }
 
   try {
-    const response = await fetch(`${API_URL}${endpoint}`, options);
-    options.next = { tags: tag };
+    const response = await fetch(`${endpoint}`, options);
+    console.log(response);
+    
+    // options.next = { tags: tag };
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

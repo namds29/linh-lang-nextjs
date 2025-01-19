@@ -71,7 +71,7 @@ const data = {
       items: [
         {
           title: "Blogs",
-          url: "#",
+          url: "/blogs",
         },
         {
           title: "Trang nội dung",

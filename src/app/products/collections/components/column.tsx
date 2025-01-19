@@ -3,7 +3,6 @@
 import { Checkbox } from '@/components/ui/checkbox'
 import { ColumnDef } from '@tanstack/react-table'
 import { DataTableColumnHeader } from './data-table-header-column'
-import { Badge } from '@/components/ui/badge'
 import { DataTableRowActions } from './data-table-row-actions'
 import {
   HoverCard,
@@ -11,8 +10,6 @@ import {
   HoverCardTrigger
 } from '@/components/ui/hover-card'
 import Image from 'next/image'
-import Product from '@/lib/types/products.type'
-import { formatCurrency } from '@/lib/pipes/currency'
 
 export const columns: ColumnDef<any>[] = [
   {

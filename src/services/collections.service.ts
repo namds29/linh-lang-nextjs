@@ -3,7 +3,7 @@ import { API_ENDPOINTS, API_URL } from "@/lib/routes/api";
 import { redirect } from "next/navigation";
 const fetchCollection = async () => {
   if (API_URL) {
-    const res = await api.get<any[]>(API_ENDPOINTS.COLLECTIONS);
+    const res = await api.get<any[]>(`${API_URL}${API_ENDPOINTS.COLLECTIONS}`);
     const data = res.data;
     return data.payload;
   }
@@ -11,13 +11,13 @@ const fetchCollection = async () => {
 };
 
 const deleteCollection = async (collectionId: string): Promise<void> => {
-  const res = await api.delete(`${API_ENDPOINTS.COLLECTIONS}/${collectionId}`);
+  const res = await api.delete(`${API_URL}${API_ENDPOINTS.COLLECTIONS}/${collectionId}`);
   if (res.status === 200) redirect("/products/collections");
 };
 
 const createCollection = async <T>(collection: ParamsCollections): Promise<any> => {
   try {
-    const res = await api.post(`${API_ENDPOINTS.COLLECTIONS}`, collection);
+    const res = await api.post(`${API_URL}${API_ENDPOINTS.COLLECTIONS}`, collection);
     return res;
   } catch (error) {
     return { message: error, status: 400 };

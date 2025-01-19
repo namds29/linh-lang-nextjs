@@ -3,13 +3,10 @@ import Product, { Category, ProductDetail } from "@/lib/types/products.type";
 import { API_ENDPOINTS, API_URL } from "@/lib/routes/api";
 import { redirect } from "next/navigation";
 const fetchProduct = async () => {
-  if (API_URL) {
     // const res = await fetch(API_URL + API_ENDPOINTS.PRODUCT);
-    const res = await api.get<Product[]>(API_ENDPOINTS.PRODUCT, ["products"]);
+    const res = await api.get<Product[]>(`${API_URL}${API_ENDPOINTS.PRODUCT}`, ["products"]);
     const data = res.data;
     return data.payload;
-  }
-  return undefined;
 };
 const fetchCategories = async (): Promise<Category[]> => {
   const listProduct = (await fetchProduct()) as any;
@@ -26,13 +23,13 @@ const fetchCategories = async (): Promise<Category[]> => {
   return listCategory;
 };
 const deleteProduct = async (productId: string): Promise<void> => {
-  const res = await api.delete(`${API_ENDPOINTS.PRODUCT}/${productId}`);
+  const res = await api.delete(`${API_URL}${API_ENDPOINTS.PRODUCT}/${productId}`);
   if (res.status === 200) redirect("/products");
 };
 
 const createProduct = async <T>(product: ProductDetail): Promise<any> => {
   try {
-    const res = await api.post(`${API_ENDPOINTS.PRODUCT}`, product);
+    const res = await api.post(`${API_URL}${API_ENDPOINTS.PRODUCT}`, product);
     return res;
   } catch (error) {
     return { message: error, status: 400 };
