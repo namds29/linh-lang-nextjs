@@ -7,19 +7,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import Product from "@/lib/types/products.type";
-import productsService from "@/services/products.service";
 import { redirect } from "next/navigation";
+import collectionsService from "@/services/collections.service";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -30,15 +24,13 @@ export function DataTableRowActions<TData>({
   row,
   table,
 }: DataTableRowActionsProps<TData>) {
-  const productDetail = row.original as Product;
+  const collectionDetail = row.original as CollectionDetail;
+
   const handleDeleteRow = async () => {
-    console.log(productDetail);
-    const res = await productsService.deleteProduct(productDetail.id)
-    console.log(res);
+     await collectionsService.deleteCollection(collectionDetail.id)
   };
   const handleEdit = async () => {
-    console.log(productDetail);
-    redirect(`/products/${productDetail.id}/edit`)
+    redirect(`/products/collections/${collectionDetail.id}/edit`)
   }
   return (
     <DropdownMenu>

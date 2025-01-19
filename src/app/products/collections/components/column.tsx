@@ -75,9 +75,10 @@ export const columns: ColumnDef<any>[] = [
       <DataTableColumnHeader column={column} title='Mô tả' />
     ),
     cell: ({ row }) => {
+      const htmlString = row.original.description
       return (
         <div className='flex items-center'>
-          <span>{row.original.description}</span>
+          <div className='line-clamp-2' dangerouslySetInnerHTML={{ __html: htmlString }} />
         </div>
       )
     },

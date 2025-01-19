@@ -1,0 +1,5 @@
+export enum FOLDER {
+    PRODUCT = 'PRODUCT',
+    COLLECTIONS = 'COLLECTIONS',
+    CATEGORIES = 'CATEGORIES'
+}

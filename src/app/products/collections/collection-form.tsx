@@ -1,15 +1,6 @@
 'use client'
 import { Input } from '@/components/ui/input'
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -18,28 +9,15 @@ import {
 import { Separator } from '@/components/ui/separator'
 import TextEditor from '@/components/ui/text-editor'
 
-import { labels, provider } from '@/lib/mock/label'
 import { useEffect, useState } from 'react'
 import { CircleHelp, ImageUp } from 'lucide-react'
-import { formatCurrency } from '@/lib/pipes/currency'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { InputLabel } from '@/components/ui/input-label'
-import { ProductDetail } from '@/lib/types/products.type'
-import productsService from '@/services/products.service'
 import { useToast } from '@/hooks/use-toast'
 import { redirect, useParams } from 'next/navigation'
-
-type Product = {
-  name: string
-  sellPrice: string
-  provider: string
-  description: string
-  comparePrice: string
-  category: string
-  imgFile: any
-  unit: number
-}
+import collectionsService from '@/services/collections.service'
+import uploadImageService from '@/services/upload-image.service'
+import { FOLDER } from '@/lib/types/utils.types'
 
 export function CollectionForm () {
   const [value, setValue] = useState('')
@@ -47,15 +25,17 @@ export function CollectionForm () {
     files: [],
     urls: []
   })
-  const [product, setProduct] = useState<Product>({
+  const [collection, setCollection] = useState<CollectionDetail>({
+    id: '',
     name: '',
-    provider: '',
-    category: '',
     description: '',
-    sellPrice: '',
-    comparePrice: '',
-    imgFile: [],
-    unit: 0
+    image: '',
+    autoSelect: true,
+    seo: {
+      title: '',
+      description: '',
+      link: 'string'
+    }
   })
   const [fieldSEO, setFieldSEO] = useState<{
     titlePage?: string
@@ -70,11 +50,12 @@ export function CollectionForm () {
   const [toggleSEO, setToggleSEO] = useState<boolean>(false)
   const { toast } = useToast()
   const paramsUrl = useParams<{ id: string }>()
+
   const isParams = Object.keys(paramsUrl).length
 
   const editContentState = (value: any) => {
     setValue(value)
-    setProduct({ ...product, description: value })
+    setCollection({ ...collection, description: value })
   }
 
   const handleFileInputChange = (e: any) => {
@@ -98,20 +79,16 @@ export function CollectionForm () {
         files: newFiles,
         urls: newUrls
       })
-      setProduct({
-        ...product,
-        imgFile: product.imgFile.filter((_: any, i: number) => i !== index)
+      setCollection({
+        ...collection
       })
     }
   }
 
   const handleDeleteImg = (index: number) => {
-    const deletedFiles = listImg.files.filter((_, i) => i !== index)
-    console.log(deletedFiles)
     if (isParams) {
-      setProduct({
-        ...product,
-        imgFile: product.imgFile.filter((_: any, i: number) => i !== index)
+      setCollection({
+        ...collection
       })
     }
     setListImg({
@@ -120,44 +97,37 @@ export function CollectionForm () {
     })
   }
   const handleSaveForm = async () => {
-    const params: ProductDetail = {
-      name: product.name,
-      provider: {
-        name: product.provider
-      },
-      category: {
-        name: product.category
-      },
-      description: product.description,
-      images: isParams ? product.imgFile : undefined,
-      price: Number(
-        product['sellPrice'].replace(/đ/, '').replace('.', '').trim()
-      ),
-      comparePrice: Number(
-        product['comparePrice'].replace(/đ/, '').replace('.', '').trim()
-      ),
-      seo: {
-        title: fieldSEO.titlePage ?? '',
-        description: fieldSEO.description ?? '',
-        link: fieldSEO.url ?? ''
-      }
-    }
+    let imgUrl = ''
 
     if (!isParams) {
-      const res = await productsService.createProduct(params)
+      if (listImg.files.length > 0) {
+        const res = await uploadImageService.uploadImage(
+          FOLDER.COLLECTIONS,
+          listImg.files
+        )
+        imgUrl = res.payload[0]
+      }
+
+      const params: ParamsCollections = {
+        name: collection.name,
+        description: collection.description ?? '',
+        image: imgUrl ?? '',
+        seo: {
+          title: fieldSEO.titlePage ?? '',
+          description: fieldSEO.description ?? '',
+          link: fieldSEO.url ?? ''
+        },
+        autoSelect: false
+      }
+      const res = await collectionsService.createCollection(params)
       if (res.status >= 200 && res.status < 400) {
         toast({
           variant: 'success',
           title: `Tạo thành công!`,
-          description: `${product.name} has been added successfully!`
+          description: `${collection.name} has been added successfully!`
         })
-        if (listImg.files.length > 0) {
-          await productsService.createImagesProduct(
-            res.data.payload,
-            listImg.files
-          )
-        }
-        redirect('/products')
+
+        redirect('/products/collections')
       } else {
         toast({
           variant: 'destructive',
@@ -166,21 +136,37 @@ export function CollectionForm () {
         })
       }
     } else {
-      // if (listImg.files.length > 0) params.images = listImg.files;
-      const res = await productsService.updateProduct(paramsUrl.id, params)
+      if (listImg.files.length > 0) {
+        const res = await uploadImageService.uploadImage(
+          FOLDER.COLLECTIONS,
+          listImg.files
+        )
+        imgUrl = res.payload[0]
+      }
+      const params = {
+        name: collection.name,
+        description: collection.description ?? '',
+        image: imgUrl ? imgUrl : listImg.urls[0],
+        seo: {
+          title: fieldSEO.titlePage ?? '',
+          description: fieldSEO.description ?? '',
+          link: fieldSEO.url ?? ''
+        },
+        autoSelect: false
+      }
+      console.log('params', params)
+
+      const res = await collectionsService.updateCollection(
+        paramsUrl.id,
+        params
+      )
       if (res.status >= 200 && res.status < 400) {
         toast({
           variant: 'success',
           title: `Sửa thành công!`,
-          description: `${product.name} has been added successfully!`
+          description: `${collection.name} has been added successfully!`
         })
-        if (listImg.files.length > 0) {
-          const resCreateImg = await productsService.createImagesProduct(
-            res.data.payload,
-            listImg.files
-          )
-        }
-        redirect('/products')
+        redirect('/products/collections')
       } else {
         toast({
           variant: 'destructive',
@@ -191,21 +177,17 @@ export function CollectionForm () {
     }
   }
   useEffect(() => {
+    console.log(paramsUrl)
+
     if (isParams) {
-      const handleGetDetailProduct = async () => {
-        const res: ProductDetail = await productsService.getDetailProduct(
-          paramsUrl.id
-        )
+      const handleGetDetailCollection = async () => {
+        const res: CollectionDetail =
+          await collectionsService.getDetailCollection(paramsUrl.id)
         console.log(res)
-        setProduct({
-          ...product,
+        setCollection({
+          ...collection,
           name: res.name,
-          provider: res.provider.name,
-          category: res.category.name,
-          comparePrice: res.comparePrice ? res.comparePrice.toString() : '',
-          sellPrice: res.price.toString(),
-          description: res.description,
-          imgFile: res.images
+          description: res.description
         })
         setFieldSEO({
           ...fieldSEO,
@@ -214,14 +196,19 @@ export function CollectionForm () {
           url: res.seo?.link
         })
         if (res.description) setValue(res.description)
-        if (res.images && res.images.length > 0) {
+        if (res.image) {
+          const url = []
+          url.push(res.image)
+          console.log(url, 'url')
+          console.log(listImg, 'url')
+
           setListImg({
             ...listImg,
-            urls: res.images.map(item => item.url)
+            urls: url
           })
         }
       }
-      handleGetDetailProduct()
+      handleGetDetailCollection()
     }
   }, [paramsUrl.id])
   return (
@@ -243,8 +230,10 @@ export function CollectionForm () {
               type='text'
               id='product'
               placeholder='Ví dụ: Nhóm Apple'
-              value={product.name}
-              onChange={e => setProduct({ ...product, name: e.target.value })}
+              value={collection.name}
+              onChange={e =>
+                setCollection({ ...collection, name: e.target.value })
+              }
             />
           </section>
 

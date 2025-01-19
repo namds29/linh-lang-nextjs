@@ -3,7 +3,6 @@ import { API_ENDPOINTS, API_URL } from "@/lib/routes/api";
 import { redirect } from "next/navigation";
 const fetchCollection = async () => {
   if (API_URL) {
-    // const res = await fetch(API_URL + API_ENDPOINTS.PRODUCT);
     const res = await api.get<any[]>(API_ENDPOINTS.COLLECTIONS);
     const data = res.data;
     return data.payload;
@@ -12,18 +11,18 @@ const fetchCollection = async () => {
 };
 
 const deleteCollection = async (collectionId: string): Promise<void> => {
-  const res = await api.delete(`${API_ENDPOINTS.PRODUCT}/${collectionId}`);
-  if (res.status === 200) redirect("/collections");
+  const res = await api.delete(`${API_ENDPOINTS.COLLECTIONS}/${collectionId}`);
+  if (res.status === 200) redirect("/products/collections");
 };
 
-// const createCollection = async <T>(collection: CollectionDetail): Promise<any> => {
-//   try {
-//     const res = await api.post(`${API_ENDPOINTS.PRODUCT}`, collection);
-//     return res;
-//   } catch (error) {
-//     return { message: error, status: 400 };
-//   }
-// };
+const createCollection = async <T>(collection: ParamsCollections): Promise<any> => {
+  try {
+    const res = await api.post(`${API_ENDPOINTS.COLLECTIONS}`, collection);
+    return res;
+  } catch (error) {
+    return { message: error, status: 400 };
+  }
+};
 const createImagesCollection = async (
   collectionId: string,
   body: File[]
@@ -48,20 +47,19 @@ const createImagesCollection = async (
   }
 };
 
-// const getDetailCollection = async (collectionId: string): Promise<CollectionDetail> => {
-//   const res = await api.get(API_ENDPOINTS.PRODUCT + "/" + collectionId);
-//   return res.data.payload as CollectionDetail;
-// };
+const getDetailCollection = async (collectionId: string): Promise<CollectionDetail> => {
+  const res = await api.get(API_ENDPOINTS.COLLECTIONS + "/" + collectionId);
+  return res.data.payload as CollectionDetail;
+};
 const updateCollection = async (collectionId: string, body: any): Promise<any> =>{
-  const res = await api.put(`${API_ENDPOINTS.PRODUCT}/${collectionId}`, body)
+  const res = await api.put(`${API_ENDPOINTS.COLLECTIONS}/${collectionId}`, body)
   return res
 }
 export default {
   fetchCollection,
-  // fetchCategories,
   deleteCollection,
-  // createCollection,
+  createCollection,
   createImagesCollection,
-  // getDetailCollection,
+  getDetailCollection,
   updateCollection
 };
