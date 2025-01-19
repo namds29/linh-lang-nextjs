@@ -71,7 +71,6 @@ export const columns: ColumnDef<BlogPost>[] = [
     cell: ({ row }) => {
       const rowData = row.original.tag
       const listTags = rowData.split(',')
-      console.log(listTags)
 
       return (
         <div>
@@ -128,9 +127,8 @@ export const columns: ColumnDef<BlogPost>[] = [
       <DataTableColumnHeader column={column} title='Ngày hiển thị' />
     ),
     cell: ({ row }) => {
-      const date = new Intl.DateTimeFormat('en-US').format(new Date(row.original.createTime))
-      console.log(date);
-      
+      const date = new Intl.DateTimeFormat('vi-VN').format(new Date(row.original.createTime))
+
       return (
         <div className='flex items-center'>
           <span>{date}</span>

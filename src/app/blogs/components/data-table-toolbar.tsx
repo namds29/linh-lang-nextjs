@@ -20,14 +20,13 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const [listCategories, setListCategories] = useState<Category[]>([])
   const isFiltered = table.getState().columnFilters.length > 0
-  useEffect(()=>{
-    const handleGetListCategory = async ()=>{
-      const res = await productsService.fetchCategories()
-      console.log(res);
-      setListCategories(res)
-    }
-    handleGetListCategory()
-  },[])
+  // useEffect(()=>{
+  //   const handleGetListCategory = async ()=>{
+  //     const res = await productsService.fetchCategories()
+  //     setListCategories(res)
+  //   }
+  //   handleGetListCategory()
+  // },[])
   return (
     <div className="flex items-center justify-between mb-3">
       <div className="flex flex-1 items-center space-x-2">

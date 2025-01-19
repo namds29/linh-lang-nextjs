@@ -4,7 +4,7 @@ import { API_ENDPOINTS, API_URL } from "@/lib/routes/api";
 import { redirect } from "next/navigation";
 const fetchProduct = async () => {
     // const res = await fetch(API_URL + API_ENDPOINTS.PRODUCT);
-    const res = await api.get<Product[]>(`${API_URL}${API_ENDPOINTS.PRODUCT}`, ["products"]);
+    const res = await api.get<Product[]>(`${API_URL}${API_ENDPOINTS.PRODUCT}`);
     const data = res.data;
     return data.payload;
 };

@@ -33,7 +33,7 @@ const fetchAPI = async <T>(
 
   try {
     const response = await fetch(`${endpoint}`, options);
-    console.log(response);
+    console.log(endpoint);
     
     // options.next = { tags: tag };
     if (!response.ok) {
