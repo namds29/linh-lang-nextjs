@@ -127,7 +127,7 @@ export const columns: ColumnDef<BlogPost>[] = [
       <DataTableColumnHeader column={column} title='Ngày hiển thị' />
     ),
     cell: ({ row }) => {
-      const date = new Intl.DateTimeFormat('vi-VN').format(new Date(row.original.createTime))
+      const date = row.original.createTime && new Intl.DateTimeFormat('vi-VN').format(new Date(row.original.createTime))
 
       return (
         <div className='flex items-center'>

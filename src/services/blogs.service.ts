@@ -21,9 +21,9 @@ const fetchBlog = async (params: ParamsFetchBlogs) => {
   return data.payload
 }
 
-const deleteBlog = async (collectionId: string): Promise<void> => {
-  const res = await api.delete(`${API_URL_WEBSITE}${API_ENDPOINTS.BLOGS}/${collectionId}`)
-  if (res.status === 200) redirect('/products/collections')
+const deleteBlog = async (body: BlogPost): Promise<void> => {
+  const res = await api.post(`${API_URL_WEBSITE}${API_ENDPOINTS.BLOGS}/update`, body);
+  if (res.status > 200 && res.status < 400) redirect('/blogs')
 }
 
 const createBlog = async (params: ParamsBlog): Promise<any> => {
@@ -35,15 +35,13 @@ const createBlog = async (params: ParamsBlog): Promise<any> => {
   }
 }
 
-const getDetailBlog = async (collectionId: string): Promise<BlogPost> => {
-  const res = await api.get(API_ENDPOINTS.COLLECTIONS + '/' + collectionId)
+const getDetailBlog = async (id: string): Promise<BlogPost> => {
+  const res = await api.get(API_URL_WEBSITE + API_ENDPOINTS.BLOGS + '/' + id)
   return res.data.payload as BlogPost
 }
-const updateBlog = async (collectionId: string, body: any): Promise<any> => {
-  const res = await api.put(
-    `${API_URL_WEBSITE}${API_ENDPOINTS.COLLECTIONS}/${collectionId}`,
-    body
-  )
+const updateBlog = async (body: BlogPost): Promise<any> => {
+  const res = await api.post(`${API_URL_WEBSITE}${API_ENDPOINTS.BLOGS}/update`, body);
+  if (res.status > 200 && res.status < 400) redirect('/blogs')
   return res
 }
 export default {

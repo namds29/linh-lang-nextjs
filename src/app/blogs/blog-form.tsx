@@ -29,6 +29,8 @@ import { useToast } from "@/hooks/use-toast";
 import { redirect, useParams } from "next/navigation";
 import { BlogPost, ParamsBlog } from "@/lib/types/blogs.type";
 import blogsService from "@/services/blogs.service";
+import { FOLDER } from "@/lib/types/utils.types";
+import uploadImageService from "@/services/upload-image.service";
 
 type SEO = {
   titlePage?: string;
@@ -58,7 +60,7 @@ const defaultBlog: ParamsBlog = {
   updateTime: "",
 };
 export function BlogForm() {
-  const [value, setValue] = useState("");
+  const [content, setContent] = useState("");
   const [quote, setQuote] = useState("");
   const [listImg, setListImg] = useState<{ files: File[]; urls: string[] }>({
     files: [],
@@ -77,7 +79,7 @@ export function BlogForm() {
   const isParams = Object.keys(paramsUrl).length;
 
   const editContentState = (value: any) => {
-    setValue(value);
+    setContent(value);
     // setBlog({ ...product, description: value });
   };
   const editQuoteState = (value: any) => {
@@ -112,7 +114,7 @@ export function BlogForm() {
       // });
     }
   };
-
+  const handleError = () => {};
   const handleDeleteImg = (index: number) => {
     const deletedFiles = listImg.files.filter((_, i) => i !== index);
     console.log(deletedFiles);
@@ -129,20 +131,36 @@ export function BlogForm() {
   };
   const handleSaveForm = async () => {
     console.log(blog?.displayTime);
-    
+
     const params: ParamsBlog = {
       title: blog?.title,
       blogCategory: blog?.blogCategory,
-      blogQuote: blog?.blogQuote,
-      content: blog?.content,
+      blogQuote: quote,
+      content: content,
       displayTime: blog?.displayTime,
-      // images: isParams ? product.imgFile : undefined,
+      image: "",
       seoTitle: fieldSEO.titlePage ?? "",
       seoDescription: fieldSEO.description ?? "",
       seoUrl: fieldSEO.url ?? "",
     };
 
+    if (!blog?.displayTime) {
+      toast({
+        variant: "destructive",
+        title: `Tạo thất bại!`,
+        description: `Hãy điền thời gian hiển thị`,
+      });
+      return;
+    }
     if (!isParams) {
+      if (listImg.files.length > 0) {
+        const res = await uploadImageService.uploadImage(
+          FOLDER.BLOGS,
+          listImg.files
+        );
+        params.image = res.payload[0];
+      }
+      console.log(params);
       const res = await blogsService.createBlog(params);
       if (res.status >= 200 && res.status < 400) {
         toast({
@@ -150,13 +168,8 @@ export function BlogForm() {
           title: `Tạo thành công!`,
           description: `${blog?.title} has been added successfully!`,
         });
-        // if (listImg.files.length > 0) {
-        //   const resCreateImg = await productsService.createImagesProduct(
-        //     res.data.payload,
-        //     listImg.files
-        //   );
-        // }
-        // redirect("/products");
+
+        redirect("/blogs");
       } else {
         toast({
           variant: "destructive",
@@ -165,7 +178,8 @@ export function BlogForm() {
         });
       }
     } else {
-      const res = await productsService.updateProduct(paramsUrl.id, params);
+
+      const res = await blogsService.updateBlog({id: paramsUrl.id, ...params});
       if (res.status >= 200 && res.status < 400) {
         toast({
           variant: "success",
@@ -189,28 +203,30 @@ export function BlogForm() {
     }
   };
   useEffect(() => {
+    console.log(isParams);
+
     if (isParams) {
-      const handleGetDetailProduct = async () => {
-        const res: ProductDetail = await productsService.getDetailProduct(
-          paramsUrl.id
-        );
+      const handleGetDetailBlog = async () => {
+        const res: BlogPost = await blogsService.getDetailBlog(paramsUrl.id);
         console.log(res);
-        // setBlog({
-        //   ...blog,,
-        //   name: res.name,
-        //   provider: res.provider.name,
-        //   category: res.category.name,
-        //   comparePrice: res.comparePrice ? res.comparePrice.toString() : "",
-        //   sellPrice: res.price.toString(),
-        //   description: res.description,
-        //   imgFile: res.images,
-        // });
-        // setFieldSEO({
-        //   ...fieldSEO,
-        //   titlePage: res.seo?.title,
-        //   description: res.seo?.description,
-        //   url: res.seo?.link,
-        // });
+        setBlog({
+          ...blog,
+          title: res?.title,
+          blogCategory: res?.blogCategory,
+          blogQuote: res?.blogQuote,
+          content: res?.content,
+          displayTime: res?.displayTime,
+          image: "",
+          seoTitle: res.seoTitle ?? "",
+          seoDescription: res.seoDescription ?? "",
+          seoUrl: res.seoUrl ?? "",
+        });
+        setFieldSEO({
+          ...fieldSEO,
+          titlePage: res.seoTitle,
+          description: res.seoDescription,
+          url: res.seoUrl,
+        });
         // if (res.description) setValue(res.description);
         // if (res.images && res.images.length > 0) {
         //   setListImg({
@@ -219,13 +235,13 @@ export function BlogForm() {
         //   });
         // }
       };
-      handleGetDetailProduct();
+      handleGetDetailBlog();
     }
   }, [paramsUrl.id]);
   return (
     <>
       <div className="text-2xl font-bold text-red-400">
-        {isParams ? "Sửa sản phẩm" : "Thêm bài đăng trên blog"}
+        {isParams ? "Sửa bài đăng" : "Thêm bài đăng trên blog"}
       </div>
       <div className="mt-8 flex gap-8">
         <div className="w-[70%]">
@@ -252,7 +268,7 @@ export function BlogForm() {
                 <label className="text-sm" htmlFor="description">
                   Nội dung
                 </label>
-                <TextEditor content={value} editContent={editContentState} />
+                <TextEditor content={content} editContent={editContentState} />
               </section>
 
               <section className="grid grid-cols-2 w-full items-center mt-6 gap-6">
@@ -502,7 +518,13 @@ export function BlogForm() {
         <div className="w-[30%]">
           <div className="w-full py-4 px-6 shadow-inner bg-white box-shadow-style rounded-md ">
             <p className="font-bold">Hiển thị</p>
-            <Input type="datetime-local" onChange={(e) => setBlog({...blog, displayTime: e.target.value})} />
+            <Input
+              required
+              type="datetime-local"
+              onChange={(e) =>
+                setBlog({ ...blog, displayTime: e.target.value })
+              }
+            />
           </div>
         </div>
       </div>
