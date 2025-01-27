@@ -48,11 +48,11 @@ const createImagesCollection = async (
 };
 
 const getDetailCollection = async (collectionId: string): Promise<CollectionDetail> => {
-  const res = await api.get(API_ENDPOINTS.COLLECTIONS + "/" + collectionId);
+  const res = await api.get(API_URL + API_ENDPOINTS.COLLECTIONS + "/" + collectionId);
   return res.data.payload as CollectionDetail;
 };
 const updateCollection = async (collectionId: string, body: any): Promise<any> =>{
-  const res = await api.put(`${API_ENDPOINTS.COLLECTIONS}/${collectionId}`, body)
+  const res = await api.put(`${API_URL +API_ENDPOINTS.COLLECTIONS}/${collectionId}`, body)
   return res
 }
 export default {

@@ -63,6 +63,8 @@ export interface ProductDetail {
   images?: any[];
   price: number;
   comparePrice: number;
+  weight: string,
+  size: string,
   seo?: {
     title: string;
     description: string;

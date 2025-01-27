@@ -122,12 +122,12 @@ export const columns: ColumnDef<BlogPost>[] = [
     }
   },
   {
-    accessorKey: 'createTime',
+    accessorKey: 'displayTime',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Ngày hiển thị' />
     ),
     cell: ({ row }) => {
-      const date = row.original.createTime && new Intl.DateTimeFormat('vi-VN').format(new Date(row.original.createTime))
+      const date = row.original.displayTime && new Intl.DateTimeFormat('vi-VN').format(new Date(row.original.displayTime))
 
       return (
         <div className='flex items-center'>

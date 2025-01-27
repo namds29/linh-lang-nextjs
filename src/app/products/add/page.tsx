@@ -2,7 +2,7 @@
 
 import ProductForm from "../product-form";
 
-export function ProductAddPage() {
+export function Page() {
   return <ProductForm />
 }
-export default ProductAddPage;
+export default Page;

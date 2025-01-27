@@ -10,8 +10,6 @@ interface ClientDataTableProps {
   data: BlogPost[] // Adjust the type based on your data structure
 }
 const ClientPage = ({columns, data}: ClientDataTableProps) => {
-  console.log(data);
-  
   const navigate = useRouter()
   const handleAddBlog = () => {
     navigate.push('/blogs/add')

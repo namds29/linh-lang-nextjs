@@ -41,7 +41,7 @@ const getDetailBlog = async (id: string): Promise<BlogPost> => {
 }
 const updateBlog = async (body: BlogPost): Promise<any> => {
   const res = await api.post(`${API_URL_WEBSITE}${API_ENDPOINTS.BLOGS}/update`, body);
-  if (res.status > 200 && res.status < 400) redirect('/blogs')
+  // if (res.status > 200 && res.status < 400) redirect('/blogs')
   return res
 }
 export default {

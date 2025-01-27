@@ -2,7 +2,7 @@
 
 import { BlogForm } from "../blog-form";
 
-export function ProductAddPage() {
+export function Page() {
   return <BlogForm />
 }
-export default ProductAddPage;
+export default Page;

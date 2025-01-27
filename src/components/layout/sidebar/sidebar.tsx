@@ -79,7 +79,7 @@ const data = {
         },
         {
           title: "Menu",
-          url: "#",
+          url: "/menu",
         },
       ],
     },

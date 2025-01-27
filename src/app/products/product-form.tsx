@@ -33,6 +33,8 @@ import { redirect, useParams } from "next/navigation";
 type Product = {
   name: string;
   sellPrice: string;
+  size: string;
+  weight: string;
   provider: string;
   description: string;
   comparePrice: string;
@@ -54,6 +56,8 @@ export function ProductForm() {
     description: "",
     sellPrice: "",
     comparePrice: "",
+    size: "",
+    weight: "",
     imgFile: [],
     unit: 0,
   });
@@ -144,6 +148,8 @@ export function ProductForm() {
       },
       description: product.description,
       images: isParams ? product.imgFile : undefined,
+      size: product.size,
+      weight: product.weight,
       price: Number(
         product["sellPrice"].replace(/đ/, "").replace(".", "").trim()
       ),
@@ -170,6 +176,8 @@ export function ProductForm() {
             res.data.payload,
             listImg.files
           );
+          console.log(resCreateImg);
+          
         }
         redirect("/products");
       } else {
@@ -181,7 +189,11 @@ export function ProductForm() {
       }
     } else {
       // if (listImg.files.length > 0) params.images = listImg.files;
+      console.log(params);
+      
       const res = await productsService.updateProduct(paramsUrl.id, params);
+      console.log(res);
+      
       if (res.status >= 200 && res.status < 400) {
         toast({
           variant: "success",
@@ -189,10 +201,12 @@ export function ProductForm() {
           description: `${product.name} has been added successfully!`,
         });
         if (listImg.files.length > 0) {
-          const resCreateImg = await productsService.createImagesProduct(
+          const data = await productsService.createImagesProduct(
             res.data.payload,
             listImg.files
           );
+          console.log(data);
+          
         }
         redirect("/products");
       } else {
@@ -219,6 +233,8 @@ export function ProductForm() {
           comparePrice: res.comparePrice ? res.comparePrice.toString() : "",
           sellPrice: res.price.toString(),
           description: res.description,
+          weight: res.weight,
+          size: res.size,
           imgFile: res.images,
         });
         setFieldSEO({
@@ -239,7 +255,7 @@ export function ProductForm() {
     }
   }, [paramsUrl.id]);
   return (
-    <div className="py-4 w-[80%]">
+    <div className="py-4 w-full">
       <div className="text-2xl font-bold text-red-400">
         {isParams ? "Sửa sản phẩm" : "Tạo sản phẩm"}
       </div>
@@ -465,6 +481,30 @@ export function ProductForm() {
             }
             id="compare-price"
             placeholder="0 đ"
+          />
+        </div>
+      </section>
+
+      <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
+        <div className="flex w-full mb-2 items-center">Chỉ số</div>
+        <Separator />
+        <div className="grid grid-cols-2 gap-8 mt-4">
+          <InputLabel
+            label="Kích thước"
+            tooltipText="Kích thước sản phẩm (dài x rộng ví dụ: 12x12)"
+            value={product.size}
+            onChange={(e) => setProduct({ ...product, size: e.target.value })}
+            id="size"
+            placeholder="Nhập kích thước"
+          />
+
+          <InputLabel
+            label="Cân nặng"
+            tooltipText="Cân nặng sản phẩm"
+            value={product.weight}
+            onChange={(e) => setProduct({ ...product, weight: e.target.value })}
+            id="weight"
+            placeholder="Nhập cân nặng"
           />
         </div>
       </section>

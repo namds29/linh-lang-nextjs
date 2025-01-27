@@ -64,7 +64,7 @@ const getDetailProduct = async (productId: string): Promise<ProductDetail> => {
   return res.data.payload as ProductDetail;
 };
 const updateProduct = async (productId: string, body: any): Promise<any> =>{
-  const res = await api.put(`${API_ENDPOINTS.PRODUCT}/${productId}`, body)
+  const res = await api.put(`${API_URL + API_ENDPOINTS.PRODUCT}/${productId}`, body)
   return res
 }
 export default {

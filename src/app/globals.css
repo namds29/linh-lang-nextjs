@@ -1,10 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @font-face {
   font-family: Roboto;
   src: url('../assets/font/Roboto-Regular.ttf');
-  font-weight: normal; /* Specify the weight */
+  font-weight: normal;
+  /* Specify the weight */
   font-style: normal;
 }
 
@@ -48,6 +50,7 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
@@ -88,6 +91,7 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -96,16 +100,20 @@ body {
 .bg-coolgray {
   background-color: #f3f4f6;
 }
+
 .box-shadow-style {
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
     rgb(209, 213, 219) 0px 0px 0px 1px inset;
 }
+
 .ql-container {
   min-height: 40vh;
 }
+
 .border-input-custom {
   border-color: #b8c7e5;
 }
+
 .collection-seo--preview-title {
   font-size: 18px;
   color: #1a0dab;
@@ -113,13 +121,86 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
 .collection-seo--preview-mota {
   word-wrap: break-word;
   color: #006621;
 }
+
 .collection-seo--preview-url {
   color: #545454;
 }
-.filter-brightness:hover{
+
+.filter-brightness:hover {
   filter: brightness(0.9);
+}
+
+/* General styling for the menu tree */
+.menu-tree {
+  list-style-type: none;
+  /* Remove default bullet points */
+  padding-left: 0;
+  /* Remove padding */
+  margin: 0;
+  /* Remove margin */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* Clean font family */
+  background-color: #ffffff;
+  /* White background */
+  border-radius: 8px;
+  /* Rounded corners */
+  /* Soft shadow */
+}
+
+/* Styling for each menu item */
+.menu-tree li {
+  position: relative;
+  border: 1px solid darkgray;
+  border-radius: 10px;
+  padding: 12px 20px 12px 20px;
+  margin: 5px 0;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+
+
+/* Hover effect for menu items */
+.menu-tree li:hover {
+  background-color: #f0f8ff;
+  /* Light blue background on hover */
+
+}
+
+/* Button styling */
+.menu-tree button {
+  margin-left: 15px;
+  /* Space between menu item and button */
+  padding: 6px 12px;
+  height: 2.25rem !important;
+  color: white;
+  /* Text color */
+  border: none;
+  /* No border */
+  border-radius: 5px;
+  /* Rounded corners */
+  cursor: pointer;
+  /* Hand cursor */
+  transition: background-color 0.3s, transform 0.2s;
+  /* Smooth background change */
+}
+
+/* Button hover effect */
+.menu-tree button:hover {
+  transform: translateY(-2px);
+  /* Slightly lift on hover */
+}
+
+/* Indent children */
+.menu-tree ul {
+  padding-left: 20px;
+  /* Indent nested lists */
+  margin: 0;
+  /* Remove margin */
 }
