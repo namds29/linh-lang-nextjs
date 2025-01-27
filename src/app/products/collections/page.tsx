@@ -3,7 +3,7 @@ import ClientPage from "./client-page";
 import { columns } from "./components/column";
 
 
-const ProductCategories = async () => {
+async function ProductCategories  () {
   const res: any = await collectionsService.fetchCollection();
   console.log(res);
   

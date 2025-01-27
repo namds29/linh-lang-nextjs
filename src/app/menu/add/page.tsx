@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import {
   Dialog,
   DialogContent,
@@ -27,6 +27,7 @@ import { MenuTree } from "@/components/layout/menu-tree";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Separator } from "@/components/ui/separator";
 import menusService from "@/services/menus.service";
+import { useToast } from "@/hooks/use-toast";
 const listDirection = [
   "Trang chủ",
   "Nhóm sản phẩm",
@@ -37,7 +38,7 @@ interface ItemProps {
   name: string;
   pathLink: string;
 }
-export function Page() {
+function Page() {
   const [menuData, setMenuData] = useState<MenuItem[]>([]);
   const [title, setTitle] = useState<string>("");
   const [newParentProps, setNewParentProps] = useState<ItemProps>({
@@ -48,6 +49,7 @@ export function Page() {
     name: "",
     pathLink: "",
   }); // State for new parent name
+  const { toast } = useToast();
 
   const addChild = (parentId: string) => {
     const newMenuItem: MenuItem = {
@@ -94,6 +96,7 @@ export function Page() {
     if (!newParentProps.name.trim()) return; // Prevent adding empty names
     const newParent: MenuItem = {
       id: Math.random().toString(),
+      pathLink: childProps.pathLink,
       name: newParentProps.name,
       menuChild: [],
     };
@@ -122,6 +125,20 @@ export function Page() {
     console.log("params", params);
     const res = await menusService.createMenu(params);
     console.log(res);
+    if (res.status >= 200 && res.status < 400) {
+      toast({
+        variant: "success",
+        title: `Tạo thành công!`,
+        description: `Menu has been added successfully!`,
+      });
+      redirect("/menu");
+    }else{
+      toast({
+        variant: "destructive",
+        title: "Tạo thất bại!",
+        description: "Vui lòng liên hệ admin để kiểm tra.",
+      });
+    }
   };
   return (
     <div className="py-4">
@@ -182,7 +199,15 @@ export function Page() {
                             <label className="text-md" htmlFor="link-to">
                               Liên kết đến
                             </label>
-                            <Select>
+                            <Select
+                              value={childProps.pathLink}
+                              onValueChange={(value) =>
+                                setChildProps({
+                                  ...childProps,
+                                  pathLink: value,
+                                })
+                              }
+                            >
                               <SelectTrigger>
                                 <SelectValue placeholder="Trang chủ" />
                               </SelectTrigger>

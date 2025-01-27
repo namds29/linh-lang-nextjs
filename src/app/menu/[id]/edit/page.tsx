@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import {
   Dialog,
   DialogContent,
@@ -27,6 +27,7 @@ import { MenuTree } from "@/components/layout/menu-tree";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Separator } from "@/components/ui/separator";
 import menusService from "@/services/menus.service";
+import { toast } from "@/hooks/use-toast";
 const listDirection = [
   "Trang chủ",
   "Nhóm sản phẩm",
@@ -38,7 +39,7 @@ interface ItemProps {
   name: string;
   pathLink: string;
 }
-export function MenuEditPage() {
+function MenuEditPage() {
   const [menuData, setMenuData] = useState<MenuItem[] | MenuItemEdit[]>([]);
   const [newParentProps, setNewParentProps] = useState<ItemProps>({
     id: "",
@@ -48,7 +49,7 @@ export function MenuEditPage() {
   const [childProps, setChildProps] = useState<ItemProps>({
     id: "",
     name: "",
-    pathLink: "",
+    pathLink: "Trang chủ",
   }); // State for new parent name
   const paramsUrl = useParams<{ id: string }>();
 
@@ -56,12 +57,12 @@ export function MenuEditPage() {
     console.log(paramsUrl);
 
     const handleGetDetailMenu = async () => {
-      const res = await menusService.fetchDetailMenu(paramsUrl.id)
+      const res = await menusService.fetchDetailMenu(paramsUrl.id);
       console.log(res);
-      setNewParentProps({id: res.id,name: res.name, pathLink: res.pathLink});
-      setMenuData(res.menuChild)
-    }
-    handleGetDetailMenu()
+      setNewParentProps({ id: res.id, name: res.name, pathLink: res.pathLink });
+      setMenuData(res.menuChild);
+    };
+    handleGetDetailMenu();
   }, [paramsUrl.id]);
 
   const addChild = (parentId: string) => {
@@ -69,14 +70,21 @@ export function MenuEditPage() {
       id: Math.random().toString(), // Use a unique ID generator in production
       name: childProps.name,
       pathLink: childProps.pathLink,
+      pathType: "CHILD",
+      tag: "CHILD_TAG",
       isEdit: true,
+      // parentId: newParentProps.id,
+      status: 1,
       menuChild: [],
     };
-    
+
     const addItemRecursively = (items: MenuItem[]): MenuItem[] => {
       return items.map((item) => {
         if (item.id === parentId) {
-          return { ...item, menuChild: [...(item.menuChild || []), newMenuItem] };
+          return {
+            ...item,
+            menuChild: [...(item.menuChild || []), newMenuItem],
+          };
         }
         if (item.menuChild) {
           return { ...item, menuChild: addItemRecursively(item.menuChild) };
@@ -107,23 +115,35 @@ export function MenuEditPage() {
     if (!newParentProps.name.trim()) return; // Prevent adding empty names
     const newParent: MenuItemEdit = {
       id: Math.random().toString(),
+      parentId: newParentProps.id,
       name: childProps.name,
+      pathLink: childProps.pathLink,
       isEdit: true,
+      pathType: "CHILD",
+      tag: "CHILD_TAG",
+      status: 0,
       menuChild: [],
     };
     console.log(newParent);
-    
+
     setMenuData([...menuData, newParent]);
     setChildProps({ ...childProps, name: "" }); // Clear the input field
   };
 
-  const removeIdFields = (obj: any) => {
-    return JSON.parse(
-      JSON.stringify(obj, (key, value) => {
-        // Exclude the id field
-        return key === "id" ? undefined : value;
-      })
-    );
+  const removeIdIfIsEdit = (obj: any): any => {
+    if (obj.isEdit === true) {
+      delete obj.id;
+      delete obj.isEdit;
+      if (!obj.menuChild.length) {
+        delete obj.menuChild;
+      }
+      // Remove the id field
+    }
+
+    if (Array.isArray(obj.menuChild)) {
+      obj.menuChild.forEach((child: any) => removeIdIfIsEdit(child));
+    }
+    return obj;
   };
   const handleSubmitForm = async () => {
     const mappedParams = {
@@ -133,14 +153,28 @@ export function MenuEditPage() {
       pathType: "ROOT",
       pathLink: newParentProps.pathLink,
       tag: "ROOT_TAG",
+      status: 1,
       menuChild: menuData,
     };
     console.log(mappedParams);
-    
-    const params = removeIdFields(mappedParams);
+
+    const params = removeIdIfIsEdit(mappedParams);
     console.log("params", params);
-    // const res = await menusService.createMenu(params);
-    // console.log(res);
+    const res = await menusService.updateMenu(params);
+    if (res.status >= 200 && res.status < 400) {
+      toast({
+        variant: "success",
+        title: `Sửa thành công!`,
+        description: `Menu has been updated successfully!`,
+      });
+      redirect("/menu");
+    }else{
+      toast({
+        variant: "destructive",
+        title: "Tạo thất bại!",
+        description: "Vui lòng liên hệ admin để kiểm tra.",
+      });
+    }
   };
   return (
     <div className="py-4">
@@ -159,8 +193,13 @@ export function MenuEditPage() {
                   type="text"
                   id="title"
                   placeholder="Tên menu"
-                  value={newParentProps.name ?? ''}
-                  onChange={(e) => setNewParentProps({...newParentProps, name: e.target.value})}
+                  value={newParentProps.name ?? ""}
+                  onChange={(e) =>
+                    setNewParentProps({
+                      ...newParentProps,
+                      name: e.target.value,
+                    })
+                  }
                 />
               </section>
             </div>
@@ -202,7 +241,14 @@ export function MenuEditPage() {
                             <label className="text-md" htmlFor="link-to">
                               Liên kết đến
                             </label>
-                            <Select>
+                            <Select
+                              onValueChange={(value) =>
+                                setChildProps({
+                                  ...childProps,
+                                  pathLink: value,
+                                })
+                              }
+                            >
                               <SelectTrigger>
                                 <SelectValue placeholder="Trang chủ" />
                               </SelectTrigger>
@@ -258,7 +304,7 @@ export function MenuEditPage() {
               required
               type="text"
               placeholder="Đường dẫn"
-              value={newParentProps.pathLink ?? ''}
+              value={newParentProps.pathLink ?? ""}
               onChange={(e) =>
                 setNewParentProps({
                   ...newParentProps,
@@ -271,7 +317,7 @@ export function MenuEditPage() {
       </div>
       <Separator className="mt-8" />
       <div className="flex justify-end mt-4">
-        <Button onClick={handleSubmitForm}>Thêm menu</Button>
+        <Button onClick={handleSubmitForm}>Sửa menu</Button>
       </div>
     </div>
   );

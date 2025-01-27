@@ -70,7 +70,7 @@ export function BlogForm() {
   const [fieldSEO, setFieldSEO] = useState<SEO>({
     titlePage: "",
     description: "",
-    url: "",
+    url: "toy.linhlang.vn/",
   });
   // const [isMultiUnit, setIsMultiUnit] = useState<boolean>(false);
   const [toggleSEO, setToggleSEO] = useState<boolean>(false);
@@ -144,14 +144,6 @@ export function BlogForm() {
       seoUrl: fieldSEO.url ?? "",
     };
 
-    if (!blog?.displayTime) {
-      toast({
-        variant: "destructive",
-        title: `Tạo thất bại!`,
-        description: `Hãy điền thời gian hiển thị`,
-      });
-      return;
-    }
     if (listImg.files.length > 0) {
       const res = await uploadImageService.uploadImage(
         FOLDER.BLOGS,
@@ -161,7 +153,7 @@ export function BlogForm() {
     }
     if (!isParams) {
       console.log(params);
-      
+
       const res = await blogsService.createBlog(params);
       if (res.status >= 200 && res.status < 400) {
         toast({
@@ -180,7 +172,7 @@ export function BlogForm() {
       }
     } else {
       console.log(params);
-      params.status = 1
+      params.status = 1;
       const res = await blogsService.updateBlog({
         ...params,
         id: paramsUrl.id,
@@ -282,41 +274,6 @@ export function BlogForm() {
                     content={content}
                     editContent={editContentState}
                   />
-                </section>
-
-                <section className="grid grid-cols-2 w-full items-center mt-6 gap-6">
-                  <div>
-                    <label className="text-sm" htmlFor="createUser">
-                      Người viết<span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      required
-                      className="w-full"
-                      type="text"
-                      id="createUser"
-                      placeholder="Người tạo"
-                      value={blog?.createUser}
-                      onChange={(e) =>
-                        setBlog({ ...blog, createUser: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm" htmlFor="category">
-                      Danh mục blog<span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      required
-                      className="w-full"
-                      type="text"
-                      id="category"
-                      placeholder="Người tạo"
-                      value={blog?.blogCategory}
-                      onChange={(e) =>
-                        setBlog({ ...blog, blogCategory: e.target.value })
-                      }
-                    />
-                  </div>
                 </section>
               </div>
             </section>
@@ -425,7 +382,7 @@ export function BlogForm() {
               </div>
             </section>
 
-            <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md mt-6">
+            <section className="py-4 px-6 shadow-inner bg-white box-shadow-style rounded-md mt-6">
               <label className="text-sm font-bold" htmlFor="description">
                 Trích dẫn
               </label>
@@ -440,11 +397,7 @@ export function BlogForm() {
                 </Button>
               </div>
               <Separator className="mb-4" />
-              {!(
-                fieldSEO.titlePage ||
-                fieldSEO.description ||
-                fieldSEO.url
-              ) && (
+              {!(fieldSEO.titlePage || fieldSEO.description) && (
                 <p>
                   Thiết lập các thẻ mô tả giúp khách hàng dễ dàng tìm thấy danh
                   mục này trên công cụ tìm kiếm như Google
@@ -480,12 +433,13 @@ export function BlogForm() {
                       setFieldSEO({ ...fieldSEO, description: e.target.value })
                     }
                   />
+
                   <InputLabel
                     className="mt-4"
                     id="link-page"
                     placeholder="Đường dẫn"
                     label="Đường dẫn"
-                    value={fieldSEO.url ?? ""}
+                    value={fieldSEO.url as string}
                     onChange={(e) =>
                       setFieldSEO({ ...fieldSEO, url: e.target.value })
                     }
@@ -509,6 +463,22 @@ export function BlogForm() {
                 value={blog.displayTime as string}
                 onChange={(e) =>
                   setBlog({ ...blog, displayTime: e.target.value })
+                }
+              />
+            </div>
+            <div className="w-full py-4 px-6 shadow-inner bg-white box-shadow-style rounded-md mt-6">
+              <label className="text-sm" htmlFor="category">
+                Danh mục blog
+              </label>
+              <Input
+                required
+                className="w-full"
+                type="text"
+                id="category"
+                placeholder="Người tạo"
+                value={blog?.blogCategory}
+                onChange={(e) =>
+                  setBlog({ ...blog, blogCategory: e.target.value })
                 }
               />
             </div>

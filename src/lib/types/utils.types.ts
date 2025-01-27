@@ -14,7 +14,11 @@ export interface MenuItemEdit {
   id: string;
   isEdit: boolean;
   name: string;
+  parentId?: string;
   pathLink?: string;
+  pathType?: string;
+  tag?: string;
+  status: number;
   menuChild?: MenuItem[]; // Optional children for nested menus
 }
 export interface MenuTreeDetail {

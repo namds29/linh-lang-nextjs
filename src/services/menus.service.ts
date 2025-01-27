@@ -34,7 +34,7 @@ const fetchDetailMenu = async (parentId: string) => {
 };
 const updateMenu = async (params: ParamsMenuItiem): Promise<any> => {
   try {
-    const res = await api.put(
+    const res = await api.post(
       `${API_URL_WEBSITE}${API_ENDPOINTS.MENU}/config/update`,
       params
     );

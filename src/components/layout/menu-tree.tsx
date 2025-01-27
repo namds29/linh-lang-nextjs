@@ -51,8 +51,8 @@ export const MenuTree: React.FC<{
   };
   return (
     <ul className="menu-tree">
-      {items.map((item) => (
-        <li key={item.id}>
+      {items.map((item, index) => (
+        <li key={ index}>
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-2">
               <div className="flex items-center">

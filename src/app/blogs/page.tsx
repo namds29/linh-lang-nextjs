@@ -5,11 +5,8 @@ import { columns } from "./components/column";
 import blogsService from "@/services/blogs.service";
 
 
-async function Page() {
+export default async function Page() {
   const res: any = await blogsService.fetchBlog({page: 0, limit: 10});
-  
-  console.log(res);
   const data: BlogPost[] = res?.content;
   return <ClientPage data={data} columns={columns} />;
 }
-export default Page;

@@ -49,6 +49,10 @@ export function ProductForm() {
     files: [],
     urls: [],
   });
+  const [size, setSize] = useState<{ width: string; height: string }>({
+    width: "",
+    height: "",
+  });
   const [product, setProduct] = useState<Product>({
     name: "",
     provider: "",
@@ -68,7 +72,7 @@ export function ProductForm() {
   }>({
     titlePage: "",
     description: "",
-    url: "",
+    url: "toy.linhlang.vn/",
   });
   // const [isMultiUnit, setIsMultiUnit] = useState<boolean>(false);
   const [toggleSEO, setToggleSEO] = useState<boolean>(false);
@@ -137,6 +141,11 @@ export function ProductForm() {
       urls: listImg.urls.filter((_, i) => i !== index),
     });
   };
+  const convertSize = (size: string) => {
+    const value = size.split("x");
+    console.log(value);
+    setSize({ width: value[1], height: value[0] });
+  };
   const handleSaveForm = async () => {
     const params: ProductDetail = {
       name: product.name,
@@ -148,7 +157,7 @@ export function ProductForm() {
       },
       description: product.description,
       images: isParams ? product.imgFile : undefined,
-      size: product.size,
+      size: size.width + "x" + size.height,
       weight: product.weight,
       price: Number(
         product["sellPrice"].replace(/đ/, "").replace(".", "").trim()
@@ -177,7 +186,6 @@ export function ProductForm() {
             listImg.files
           );
           console.log(resCreateImg);
-          
         }
         redirect("/products");
       } else {
@@ -190,10 +198,10 @@ export function ProductForm() {
     } else {
       // if (listImg.files.length > 0) params.images = listImg.files;
       console.log(params);
-      
+
       const res = await productsService.updateProduct(paramsUrl.id, params);
       console.log(res);
-      
+
       if (res.status >= 200 && res.status < 400) {
         toast({
           variant: "success",
@@ -206,7 +214,6 @@ export function ProductForm() {
             listImg.files
           );
           console.log(data);
-          
         }
         redirect("/products");
       } else {
@@ -225,6 +232,9 @@ export function ProductForm() {
           paramsUrl.id
         );
         console.log(res);
+        if (res && res.size) {
+          convertSize(res.size);
+        }
         setProduct({
           ...product,
           name: res.name,
@@ -251,6 +261,7 @@ export function ProductForm() {
           });
         }
       };
+
       handleGetDetailProduct();
     }
   }, [paramsUrl.id]);
@@ -488,19 +499,25 @@ export function ProductForm() {
       <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
         <div className="flex w-full mb-2 items-center">Chỉ số</div>
         <Separator />
-        <div className="grid grid-cols-2 gap-8 mt-4">
+        <div className="grid grid-cols-3 gap-8 mt-4">
           <InputLabel
-            label="Kích thước"
-            tooltipText="Kích thước sản phẩm (dài x rộng ví dụ: 12x12)"
-            value={product.size}
-            onChange={(e) => setProduct({ ...product, size: e.target.value })}
-            id="size"
+            label="Chiều dài"
+            type="number"
+            value={size.height}
+            onChange={(e) => setSize({ ...size, height: e.target.value })}
+            id="height"
+            placeholder="Nhập kích thước"
+          />
+          <InputLabel
+            label="Chiều rộng"
+            value={size.width}
+            onChange={(e) => setSize({ ...size, width: e.target.value })}
+            id="width"
             placeholder="Nhập kích thước"
           />
 
           <InputLabel
             label="Cân nặng"
-            tooltipText="Cân nặng sản phẩm"
             value={product.weight}
             onChange={(e) => setProduct({ ...product, weight: e.target.value })}
             id="weight"
@@ -552,7 +569,7 @@ export function ProductForm() {
           </Button>
         </div>
         <Separator className="mb-4" />
-        {!(fieldSEO.titlePage || fieldSEO.description || fieldSEO.url) && (
+        {!(fieldSEO.titlePage || fieldSEO.description) && (
           <p>
             Thiết lập các thẻ mô tả giúp khách hàng dễ dàng tìm thấy danh mục
             này trên công cụ tìm kiếm như Google

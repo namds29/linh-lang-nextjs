@@ -19,7 +19,7 @@ import collectionsService from "@/services/collections.service";
 import uploadImageService from "@/services/upload-image.service";
 import { FOLDER } from "@/lib/types/utils.types";
 
-export function CollectionForm() {
+function CollectionForm() {
   const [value, setValue] = useState("");
   const [listImg, setListImg] = useState<{ files: File[]; urls: string[] }>({
     files: [],
