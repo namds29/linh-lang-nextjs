@@ -194,7 +194,7 @@ export function BlogForm() {
             listImg.files
           );
         }
-        // redirect("/blogs");
+        redirect("/blogs");
       } else {
         toast({
           variant: "destructive",
