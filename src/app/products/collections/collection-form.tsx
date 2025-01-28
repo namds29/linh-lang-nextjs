@@ -44,7 +44,7 @@ function CollectionForm() {
   }>({
     titlePage: "",
     description: "",
-    url: "",
+    url: "toy.linhlang.vn/",
   });
   // const [isMultiUnit, setIsMultiUnit] = useState<boolean>(false);
   const [toggleSEO, setToggleSEO] = useState<boolean>(false);
