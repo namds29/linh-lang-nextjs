@@ -3,159 +3,163 @@ import {
   Circle,
   CircleOff,
   HelpCircle,
-  Timer
-} from 'lucide-react'
+  Timer,
+} from "lucide-react";
 
 export const labels = [
   {
-    value: 'Đồ chơi gỗ',
-    label: 'Đồ chơi gỗ'
+    value: "Đồ chơi gỗ",
+    label: "Đồ chơi gỗ",
   },
   {
-    value: 'Đồ chơi lắp ráp',
-    label: 'Đồ chơi lắp ráp'
+    value: "Đồ chơi lắp ráp",
+    label: "Đồ chơi lắp ráp",
   },
   {
-    value: 'Đồ chơi mô hình',
-    label: 'Đồ chơi mô hình'
+    value: "Đồ chơi mô hình",
+    label: "Đồ chơi mô hình",
   },
   {
-    value: 'Đồ chơi giả lập',
-    label: 'Đồ chơi giả lập'
+    value: "Đồ chơi giả lập",
+    label: "Đồ chơi giả lập",
   },
   {
-    value: 'Đồ chơi giáo dục',
-    label: 'Đồ chơi giáo dục'
+    value: "Đồ chơi giáo dục",
+    label: "Đồ chơi giáo dục",
   },
   {
-    value: 'Đồ chơi xe',
-    label: 'Đồ chơi xe'
+    value: "Đồ chơi xe",
+    label: "Đồ chơi xe",
   },
   {
-    value: 'Đồ chơi công nghệ',
-    label: 'Đồ chơi công nghệ'
+    value: "Đồ chơi công nghệ",
+    label: "Đồ chơi công nghệ",
   },
   {
-    value: 'Đồ chơi búp bê',
-    label: 'Đồ chơi búp bê'
+    value: "Đồ chơi búp bê",
+    label: "Đồ chơi búp bê",
   },
   {
-    value: 'Đồ chơi sáng tạo',
-    label: 'Đồ chơi sáng tạo'
-  }
-]
+    value: "Đồ chơi sáng tạo",
+    label: "Đồ chơi sáng tạo",
+  },
+];
 
 export const statuses = [
   {
-    value: 'backlog',
-    label: 'Backlog',
-    icon: HelpCircle
+    value: "backlog",
+    label: "Backlog",
+    icon: HelpCircle,
   },
   {
-    value: 'todo',
-    label: 'Todo',
-    icon: Circle
+    value: "todo",
+    label: "Todo",
+    icon: Circle,
   },
   {
-    value: 'in progress',
-    label: 'In Progress',
-    icon: Timer
+    value: "in progress",
+    label: "In Progress",
+    icon: Timer,
   },
   {
-    value: 'done',
-    label: 'Done',
-    icon: CheckCircle
+    value: "done",
+    label: "Done",
+    icon: CheckCircle,
   },
   {
-    value: 'canceled',
-    label: 'Canceled',
-    icon: CircleOff
-  }
-]
+    value: "canceled",
+    label: "Canceled",
+    icon: CircleOff,
+  },
+];
 
 export const provider = [
   {
-      value: "Atachoi",
-      label: "Atachoi"
+    value: "Linh Lang",
+    label: "Linh Lang",
   },
   {
-      value: "ToyLand",
-      label: "ToyLand"
+    value: "Atachoi",
+    label: "Atachoi",
   },
   {
-      value: "CarZone",
-      label: "CarZone"
+    value: "ToyLand",
+    label: "ToyLand",
   },
   {
-      value: "HappyKids",
-      label: "HappyKids"
+    value: "CarZone",
+    label: "CarZone",
   },
   {
-      value: "EduToys",
-      label: "EduToys"
+    value: "HappyKids",
+    label: "HappyKids",
   },
   {
-      value: "RailwayWorld",
-      label: "RailwayWorld"
+    value: "EduToys",
+    label: "EduToys",
   },
   {
-      value: "BlockBuilders",
-      label: "BlockBuilders"
+    value: "RailwayWorld",
+    label: "RailwayWorld",
   },
   {
-      value: "TruckMasters",
-      label: "TruckMasters"
+    value: "BlockBuilders",
+    label: "BlockBuilders",
   },
   {
-      value: "DressUp",
-      label: "DressUp"
+    value: "TruckMasters",
+    label: "TruckMasters",
   },
   {
-      value: "AeroToys",
-      label: "AeroToys"
+    value: "DressUp",
+    label: "DressUp",
   },
   {
-      value: "TechToys",
-      label: "TechToys"
+    value: "AeroToys",
+    label: "AeroToys",
   },
   {
-      value: "PuzzleWorld",
-      label: "PuzzleWorld"
+    value: "TechToys",
+    label: "TechToys",
   },
   {
-      value: "BikeZone",
-      label: "BikeZone"
+    value: "PuzzleWorld",
+    label: "PuzzleWorld",
   },
   {
-      value: "BuildIt",
-      label: "BuildIt"
+    value: "BikeZone",
+    label: "BikeZone",
   },
   {
-      value: "DollHouse",
-      label: "DollHouse"
+    value: "BuildIt",
+    label: "BuildIt",
   },
   {
-      value: "GreenThumb",
-      label: "GreenThumb"
+    value: "DollHouse",
+    label: "DollHouse",
   },
   {
-      value: "RaceTrack",
-      label: "RaceTrack"
+    value: "GreenThumb",
+    label: "GreenThumb",
   },
   {
-      value: "SmartToys",
-      label: "SmartToys"
+    value: "RaceTrack",
+    label: "RaceTrack",
   },
   {
-      value: "AdventureToys",
-      label: "AdventureToys"
+    value: "SmartToys",
+    label: "SmartToys",
   },
   {
-      value: "NavyToys",
-      label: "NavyToys"
+    value: "AdventureToys",
+    label: "AdventureToys",
   },
   {
-      value: "CreativeKids",
-      label: "CreativeKids"
-  }
-]
+    value: "NavyToys",
+    label: "NavyToys",
+  },
+  {
+    value: "CreativeKids",
+    label: "CreativeKids",
+  },
+];

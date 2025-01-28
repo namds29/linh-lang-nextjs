@@ -29,6 +29,7 @@ import { ProductDetail } from "@/lib/types/products.type";
 import productsService from "@/services/products.service";
 import { useToast } from "@/hooks/use-toast";
 import { redirect, useParams } from "next/navigation";
+import { convertToSlug } from "@/lib/pipes/convertSlug";
 
 type Product = {
   name: string;
@@ -55,7 +56,7 @@ export function ProductForm() {
   });
   const [product, setProduct] = useState<Product>({
     name: "",
-    provider: "",
+    provider: "Linh Lang",
     category: "",
     description: "",
     sellPrice: "",
@@ -80,9 +81,13 @@ export function ProductForm() {
   const paramsUrl = useParams<{ id: string }>();
   const isParams = Object.keys(paramsUrl).length;
 
+  function removeHtmlTags(htmlString: string) {
+    return htmlString.replace(/<[^>]*>/g, "").trim();
+  }
   const editContentState = (value: any) => {
     setValue(value);
     setProduct({ ...product, description: value });
+    setFieldSEO({ ...fieldSEO, description: removeHtmlTags(value) });
   };
 
   const handleBlur = (e: any, key: string) => {
@@ -285,7 +290,14 @@ export function ProductForm() {
               id="product"
               placeholder="Nhập tên sản phẩm"
               value={product.name}
-              onChange={(e) => setProduct({ ...product, name: e.target.value })}
+              onChange={(e) => {
+                setProduct({ ...product, name: e.target.value });
+                setFieldSEO({
+                  ...fieldSEO,
+                  titlePage: e.target.value,
+                  url: "toy.linhlang.vn/" + convertToSlug(e.target.value),
+                });
+              }}
             />
           </section>
           <section className="grid grid-cols-2 w-full items-center mt-6 gap-6">

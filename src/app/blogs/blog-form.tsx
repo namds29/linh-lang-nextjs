@@ -31,6 +31,7 @@ import { BlogPost, ParamsBlog } from "@/lib/types/blogs.type";
 import blogsService from "@/services/blogs.service";
 import { FOLDER } from "@/lib/types/utils.types";
 import uploadImageService from "@/services/upload-image.service";
+import { convertToSlug } from "@/lib/pipes/convertSlug";
 
 type SEO = {
   titlePage?: string;
@@ -78,8 +79,12 @@ export function BlogForm() {
   const paramsUrl = useParams<{ id: string }>();
   const isParams = Object.keys(paramsUrl).length;
 
+  function removeHtmlTags(htmlString: string) {
+    return htmlString.replace(/<[^>]*>/g, "").trim();
+  }
   const editContentState = (value: any) => {
     setContent(value);
+    setFieldSEO({ ...fieldSEO, description: removeHtmlTags(value) });
     // setBlog({ ...product, description: value });
   };
   const editQuoteState = (value: any) => {
@@ -260,9 +265,14 @@ export function BlogForm() {
                     id="title"
                     placeholder="Tiêu đề"
                     value={blog?.title}
-                    onChange={(e) =>
-                      setBlog({ ...blog, title: e.target.value })
-                    }
+                    onChange={(e) => {
+                      setBlog({ ...blog, title: e.target.value });
+                      setFieldSEO({
+                        ...fieldSEO,
+                        titlePage: e.target.value,
+                        url: "toy.linhlang.vn/" + convertToSlug(e.target.value)
+                      });
+                    }}
                   />
                 </section>
 

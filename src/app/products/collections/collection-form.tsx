@@ -18,6 +18,7 @@ import { redirect, useParams } from "next/navigation";
 import collectionsService from "@/services/collections.service";
 import uploadImageService from "@/services/upload-image.service";
 import { FOLDER } from "@/lib/types/utils.types";
+import { convertToSlug } from "@/lib/pipes/convertSlug";
 
 function CollectionForm() {
   const [value, setValue] = useState("");
@@ -53,9 +54,13 @@ function CollectionForm() {
 
   const isParams = Object.keys(paramsUrl).length;
 
+  function removeHtmlTags(htmlString: string) {
+    return htmlString.replace(/<[^>]*>/g, "").trim();
+  }
   const editContentState = (value: any) => {
     setValue(value);
     setCollection({ ...collection, description: value });
+    setFieldSEO({ ...fieldSEO, description: removeHtmlTags(value) });
   };
 
   const handleFileInputChange = (e: any) => {
@@ -233,9 +238,14 @@ function CollectionForm() {
                   id="product"
                   placeholder="Ví dụ: Nhóm Apple"
                   value={collection.name}
-                  onChange={(e) =>
-                    setCollection({ ...collection, name: e.target.value })
-                  }
+                  onChange={(e) => {
+                    setCollection({ ...collection, name: e.target.value });
+                    setFieldSEO({
+                      ...fieldSEO,
+                      titlePage: e.target.value,
+                      url: "toy.linhlang.vn/" + convertToSlug(e.target.value),
+                    });
+                  }}
                 />
               </section>
 
