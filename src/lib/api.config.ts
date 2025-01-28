@@ -22,6 +22,7 @@ const fetchAPI = async <T>(
 ): Promise<ApiResponse<T>> => {
   const options: RequestInit = {
     method: method,
+    cache: 'no-cache',
     headers: {
       "Content-Type": "application/json",
     },
