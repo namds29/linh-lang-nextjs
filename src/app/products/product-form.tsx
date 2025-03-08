@@ -73,7 +73,7 @@ const getListStyle = (isDraggingOver: boolean) => ({
 })
 const generateUniqueId = () => {
   const uniqueId = Date.now()
-  return `id-${uniqueId}-${Math.random().toString(36).substr(2, 9)}`;
+  return `id-${Math.random().toString(36).substr(2, 9)}`;
 };
 export function ProductForm () {
   const [value, setValue] = useState('')
