@@ -483,7 +483,7 @@ export function ProductForm () {
                     style={getListStyle(snapshot.isDraggingOver)}
                   >
                     {listImg.urls.map((item, index) => (
-                      <Draggable key={item} draggableId={item} index={index}>
+                      <Draggable key={item + index} draggableId={item} index={index}>
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}

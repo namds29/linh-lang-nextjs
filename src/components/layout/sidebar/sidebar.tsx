@@ -48,6 +48,10 @@ const data = {
       isActive: true,
       items: [
         {
+          title: "Banners",
+          url: "/banners",
+        },
+        {
           title: "Tất cả sản phẩm",
           url: "/products",
         },
