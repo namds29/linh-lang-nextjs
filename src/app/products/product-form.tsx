@@ -29,7 +29,7 @@ import productsService from '@/services/products.service'
 import { useToast } from '@/hooks/use-toast'
 import { redirect, useParams } from 'next/navigation'
 import { convertToSlug } from '@/lib/pipes/convertSlug'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 
 type Product = {
   name: string
