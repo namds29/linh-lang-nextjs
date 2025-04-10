@@ -3,6 +3,7 @@ export enum FOLDER {
   COLLECTIONS = "COLLECTIONS",
   CATEGORIES = "CATEGORIES",
   BLOGS = "BLOGS",
+  BANNERS = "BANNERS",
 }
 export interface MenuItem {
   id: string;
@@ -32,3 +33,9 @@ export interface MenuTreeDetail {
   tag: string;
   menuChild: MenuTreeDetail[]
 }
+
+export type ListBanners = {
+  id: string;
+  imgUrl: string;
+  orderIndex: number | null;
+};

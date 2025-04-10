@@ -1,15 +1,12 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { ListBanners } from "@/lib/types/utils.types";
 import bannersService from "@/services/banners.service";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import { useEffect, useState } from "react";
 
-type ListBanners = {
-  id: string;
-  imgUrl: string;
-  orderIndex: number;
-};
 const mockData = [
   {
     id: "12a",
@@ -30,11 +27,7 @@ const mockData = [
     orderIndex: 3,
   },
 ];
-const getItems = (count: number) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k}`,
-    content: `item ${k}`,
-  }));
+
 const reorder = (list: any[], startIndex: number, endIndex: number) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -52,6 +45,7 @@ const generateUniqueId = () => {
 };
 function Page() {
   const [listImg, setListImg] = useState<ListBanners[]>(mockData);
+  const [isEdit, setIsEdit] = useState(false);
   const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
     userSelect: "none",
     width: "100%",
@@ -70,9 +64,28 @@ function Page() {
       result.source.index,
       result.destination.index
     );
-    setListImg(items)
+    setListImg(items);
     console.log(items, "items");
   }
+  const handleAddImage = (e: any) => {
+    const listFile: File[] = Array.from(e.target.files);
+    const listUrlImg = listFile.map((file: any) => {
+      return {
+        id: generateUniqueId(),
+        imgUrl: URL.createObjectURL(file),
+        orderIndex: null,
+      };
+    });
+    console.log(listUrlImg);
+    setListImg([...listImg, ...listUrlImg]);
+  };
+  const handleSave = async () => {
+    if (isEdit) {
+      console.log("alo");
+    }
+    setIsEdit(!isEdit);
+  };
+
   useEffect(() => {
     const fetchListBanner = async () => {
       const res = await bannersService.fetchBanners();
@@ -84,58 +97,100 @@ function Page() {
   return (
     <div>
       <Card className="p-6 mb-6">
-        <CardTitle>Banners</CardTitle>
+        <CardTitle>
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold">Banners</div>
+            <div className="flex gap-4">
+              <Button onClick={() => handleSave()} className="btn btn-primary">
+                {isEdit ? "Save" : "Edit"}
+              </Button>
+              <input
+                id="file-input"
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleAddImage}
+                style={{ display: "none" }}
+              />
+              <Button
+                variant={"outline"}
+                onClick={() => {
+                  const inputFile = document.getElementById("file-input");
+                  if (inputFile) {
+                    inputFile.click();
+                  }
+                }}
+              >
+                Add Image
+              </Button>
+            </div>
+          </div>
+        </CardTitle>
         <CardContent className="mt-6 gap-6 overflow-x-auto">
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable
-              isDropDisabled={false}
-              isCombineEnabled={false}
-              ignoreContainerClipping={false}
-              droppableId={generateUniqueId()}
-              direction="vertical"
-            >
-              {(provided, snapshot) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  style={getListStyle(snapshot.isDraggingOver)}
-                >
-                  {listImg.map((item, index) => (
-                    <div key={item.id + index}>
-                      <Draggable
-                        key={item.id}
-                        draggableId={item.id}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style
-                            )}
-                          >
-                            <div
-                              className="mt-4 bg-gray-300 h-[400px] w-full"
-                            >
-                              <img
-                                className="w-full h-full"
-                                src={item.imgUrl}
-                                alt={item.id}
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    </div>
-                  ))}
-                  {provided.placeholder}
+          {!isEdit &&
+            listImg.map((item, index) => (
+              <div key={item.id + index}>
+                <div className="mt-4 bg-gray-300 h-[500px] w-full">
+                  <img
+                    className="w-full h-full object-contain"
+                    src={item.imgUrl}
+                    alt={item.id}
+                  />
                 </div>
-              )}
-            </Droppable>
-          </DragDropContext>
+              </div>
+            ))}
+
+          {/* Not edited */}
+          {isEdit && (
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable
+                isDropDisabled={false}
+                isCombineEnabled={false}
+                ignoreContainerClipping={false}
+                droppableId={generateUniqueId()}
+                direction="vertical"
+              >
+                {(provided, snapshot) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    style={getListStyle(snapshot.isDraggingOver)}
+                  >
+                    {listImg.map((item, index) => (
+                      <div key={item.id + index}>
+                        <Draggable
+                          key={item.id}
+                          draggableId={item.id}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              style={getItemStyle(
+                                snapshot.isDragging,
+                                provided.draggableProps.style
+                              )}
+                            >
+                              <div className="mt-4 bg-gray-300 h-[500px] w-full">
+                                <img
+                                  className="w-full h-full object-contain"
+                                  src={item.imgUrl}
+                                  alt={item.id}
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </Draggable>
+                      </div>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          )}
         </CardContent>
       </Card>
     </div>
