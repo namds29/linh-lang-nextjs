@@ -36,6 +36,8 @@ export interface MenuTreeDetail {
 
 export type ListBanners = {
   id: string;
-  imgUrl: string;
+  imageUrl: string;
+  imageFile: File;
   orderIndex: number | null;
+  isAdded?: boolean;
 };

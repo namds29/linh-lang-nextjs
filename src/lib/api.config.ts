@@ -6,7 +6,8 @@ export interface RequestData {
 // Type definition for the API response
 export interface ApiResponse<T> {
   data: {
-    payload: T;
+    payload?: T;
+    content?: T;
     responseCode: string;
     responseMessage: string;
   };
