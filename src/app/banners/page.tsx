@@ -83,6 +83,7 @@ function Page() {
     });
     console.log(listUrlImg);
     setListImg([...listImg, ...listUrlImg]);
+    setIsEdit(true);
   };
   const handleSave = async () => {
     if (isEdit) {
@@ -118,6 +119,18 @@ function Page() {
           console.log(error);
         }
       }
+
+      for (const item of payload) {
+        try {
+          const res = await bannersService.updateBanners(item.id, {
+            imageUrl: item.imgUrl,
+            orderIndex: item.orderIndex,
+          });
+          console.log(res);
+        } catch (error) {
+          console.log(error);
+        }
+      }
       console.log(listBannerUrl, "listBannerUrl");
 
       console.log(payload, "1231231");
@@ -134,7 +147,8 @@ function Page() {
   };
   const fetchListBanner = async () => {
     const res = await bannersService.fetchBanners();
-    setListImg(res.content);
+    const sortRes = res.content.sort((a: any, b: any) => a.orderIndex - b.orderIndex);
+    setListImg(sortRes);
     console.log(res.content);
   };
   useEffect(() => {

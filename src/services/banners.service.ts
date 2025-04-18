@@ -8,10 +8,17 @@ const fetchBanners = async () => {
   );
   return res.data;
 };
-const updateBanners = async (payload: { imageUrl: string }) => {
-  const res = await api.put<any>(
-    `${API_URL_WEBCONFIG}${API_ENDPOINTS.WEBCONFIG.BANNER}`,
-    payload
+const updateBanners = async (
+  id: string,
+  payload: { imageUrl: string; orderIndex?: number }
+) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  const res = await fetch(
+    `${API_URL_WEBCONFIG}${API_ENDPOINTS.WEBCONFIG.BANNER}/${id}`,
+    {
+      method: "PUT", body: JSON.stringify(payload), headers: myHeaders
+    }
   );
   return res;
 };
