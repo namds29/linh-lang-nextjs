@@ -17,11 +17,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { labels } from "../../../../lib/mock/label";
+import { labels } from "../../../lib/mock/label";
 import { Button } from "@/components/ui/button";
 import Product from "@/lib/types/products.type";
 import productsService from "@/services/products.service";
 import { redirect } from "next/navigation";
+import { BlogPost } from "@/lib/types/blogs.type";
+import blogsService from "@/services/blogs.service";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -32,16 +34,13 @@ export function DataTableRowActions<TData>({
   row,
   table,
 }: DataTableRowActionsProps<TData>) {
-  const productDetail = row.original as Product;
+  const blog = row.original as BlogPost;
   const handleDeleteRow = async () => {
-    console.log(productDetail);
-    const res = await productsService.deleteProduct(productDetail.id)
-    console.log(res);
+    await blogsService.deleteBlog({ ...blog, status: 0 });
   };
   const handleEdit = async () => {
-    console.log(productDetail);
-    redirect(`/products/${productDetail.id}/edit`)
-  }
+    redirect(`/blogs/${blog.id}/edit`);
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -57,7 +56,6 @@ export function DataTableRowActions<TData>({
         <DropdownMenuItem onClick={() => handleEdit()}>Edit</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleDeleteRow}>
-          
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
