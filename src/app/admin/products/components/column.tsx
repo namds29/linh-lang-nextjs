@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./data-table-header-column";
 import { Badge } from "@/components/ui/badge";
-import { labels } from "../../../lib/mock/label";
+import { labels } from "../../../../lib/mock/label";
 import { DataTableRowActions } from "./data-table-row-actions";
 import {
   HoverCard,
