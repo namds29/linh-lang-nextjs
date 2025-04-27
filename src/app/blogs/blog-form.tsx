@@ -264,16 +264,131 @@ export function BlogForm() {
                     type="text"
                     id="title"
                     placeholder="Tiêu đề"
-                    value={blog?.title}
+                    value={blog?.title ?? ""}
                     onChange={(e) => {
                       setBlog({ ...blog, title: e.target.value });
                       setFieldSEO({
                         ...fieldSEO,
                         titlePage: e.target.value,
-                        url: "toy.linhlang.vn/" + convertToSlug(e.target.value)
+                        url: "toy.linhlang.vn/" + convertToSlug(e.target.value),
                       });
                     }}
                   />
+                </section>
+
+                <section className="bg-white mt-8 rounded-md">
+                  <div className="flex w-full mb-2 items-center">
+                    <p className="font-bold">Hình ảnh sản phẩm</p>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div>
+                            <CircleHelp
+                              className="ml-1 text-blue-500"
+                              size={18}
+                            />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>
+                            Ảnh định dạng jpg, jpeg, png, gif tỉ lệ 1:1 (ảnh
+                            vuông) và độ phân giải 2048px x 2048px để chất lượng
+                            hình ảnh tốt nhất
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <Separator />
+
+                  <div className="mt-6 flex justify-center items-center bg-gray-100">
+                    {!listImg.urls.length && (
+                      <label
+                        htmlFor="file-upload"
+                        role="region"
+                        onDragOver={(e) => e.preventDefault()} // Essential for drop to work
+                        style={{
+                          border: "1px dashed #ccc",
+                          padding: "20px",
+                          cursor: "pointer",
+                          display: "block", // To make the label take up the full width
+                          borderRadius: 10,
+                          width: "100%",
+                        }}
+                      >
+                        <input
+                          type="file"
+                          id="file-upload"
+                          accept="image/*"
+                          multiple // Allow multiple file selection if needed
+                          onChange={handleFileInputChange}
+                          style={{ display: "none" }} // Hide the default file input
+                        />
+                        <div className="w-full flex flex-col items-center justify-center h-[8rem]">
+                          <div>
+                            <ImageUp size={48} />
+                          </div>
+                          <div>
+                            <span className="text-blue-500">Kéo</span> và{" "}
+                            <span className="text-blue-500">Thả</span> files vào
+                            đây, hoặc{" "}
+                            <span className="text-blue-500">Click</span> để chọn
+                            files.
+                          </div>
+                        </div>
+                      </label>
+                    )}
+                    {listImg.urls.length > 0 && (
+                      <div className="flex w-full gap-4">
+                        {listImg.urls.map((img, index) => (
+                          <label
+                            key={img + index}
+                            htmlFor={`file-upload-${index}`}
+                            role="region"
+                            style={{
+                              border: "1px dashed #ccc",
+                              padding: "20px",
+                              cursor: "pointer",
+                              display: "block", // To make the label take up the full width
+                              borderRadius: 10,
+                              width: "100%",
+                            }}
+                          >
+                            <input
+                              type="file"
+                              id={`file-upload-${index}`}
+                              accept="image/*"
+                              onChange={(event) =>
+                                handleEachFileChange(event, index)
+                              }
+                              style={{ display: "none" }} // Hide the default file input
+                            />
+                            <div className="w-full relative">
+                              <button
+                                className="absolute z-10 right-[-12px] top-[-12px] bg-red-400 w-6 h-6 text-white rounded-full"
+                                onClick={() => handleDeleteImg(index)}
+                              >
+                                x
+                              </button>
+                              <img
+                                className="w-full filter-brightness"
+                                key={img + index}
+                                src={img}
+                                alt=""
+                              />
+                            </div>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </section>
+
+                <section className=" bg-white rounded-md mt-6">
+                  <label className="text-sm font-bold" htmlFor="description">
+                    Trích dẫn
+                  </label>
+                  <TextEditor content={quote} editContent={editQuoteState} />
                 </section>
 
                 <section className="mt-6">
@@ -286,117 +401,6 @@ export function BlogForm() {
                   />
                 </section>
               </div>
-            </section>
-
-            <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
-              <div className="flex w-full mb-2 items-center">
-                <p className="font-bold">Hình ảnh sản phẩm</p>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div>
-                        <CircleHelp className="ml-1 text-blue-500" size={18} />
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>
-                        Ảnh định dạng jpg, jpeg, png, gif tỉ lệ 1:1 (ảnh vuông)
-                        và độ phân giải 2048px x 2048px để chất lượng hình ảnh
-                        tốt nhất
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-              <Separator />
-
-              <div className="mt-6 flex justify-center items-center bg-gray-100">
-                {!listImg.urls.length && (
-                  <label
-                    htmlFor="file-upload"
-                    role="region"
-                    onDragOver={(e) => e.preventDefault()} // Essential for drop to work
-                    style={{
-                      border: "1px dashed #ccc",
-                      padding: "20px",
-                      cursor: "pointer",
-                      display: "block", // To make the label take up the full width
-                      borderRadius: 10,
-                      width: "100%",
-                    }}
-                  >
-                    <input
-                      type="file"
-                      id="file-upload"
-                      accept="image/*"
-                      multiple // Allow multiple file selection if needed
-                      onChange={handleFileInputChange}
-                      style={{ display: "none" }} // Hide the default file input
-                    />
-                    <div className="w-full flex flex-col items-center justify-center h-[8rem]">
-                      <div>
-                        <ImageUp size={48} />
-                      </div>
-                      <div>
-                        <span className="text-blue-500">Kéo</span> và{" "}
-                        <span className="text-blue-500">Thả</span> files vào
-                        đây, hoặc <span className="text-blue-500">Click</span>{" "}
-                        để chọn files.
-                      </div>
-                    </div>
-                  </label>
-                )}
-                {listImg.urls.length > 0 && (
-                  <div className="flex w-full gap-4">
-                    {listImg.urls.map((img, index) => (
-                      <label
-                        key={img + index}
-                        htmlFor={`file-upload-${index}`}
-                        role="region"
-                        style={{
-                          border: "1px dashed #ccc",
-                          padding: "20px",
-                          cursor: "pointer",
-                          display: "block", // To make the label take up the full width
-                          borderRadius: 10,
-                          width: "100%",
-                        }}
-                      >
-                        <input
-                          type="file"
-                          id={`file-upload-${index}`}
-                          accept="image/*"
-                          onChange={(event) =>
-                            handleEachFileChange(event, index)
-                          }
-                          style={{ display: "none" }} // Hide the default file input
-                        />
-                        <div className="w-full relative">
-                          <button
-                            className="absolute z-10 right-[-12px] top-[-12px] bg-red-400 w-6 h-6 text-white rounded-full"
-                            onClick={() => handleDeleteImg(index)}
-                          >
-                            x
-                          </button>
-                          <img
-                            className="w-full filter-brightness"
-                            key={img + index}
-                            src={img}
-                            alt=""
-                          />
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </section>
-
-            <section className="py-4 px-6 shadow-inner bg-white box-shadow-style rounded-md mt-6">
-              <label className="text-sm font-bold" htmlFor="description">
-                Trích dẫn
-              </label>
-              <TextEditor content={quote} editContent={editQuoteState} />
             </section>
 
             <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 rounded-md">
@@ -449,7 +453,7 @@ export function BlogForm() {
                     id="link-page"
                     placeholder="Đường dẫn"
                     label="Đường dẫn"
-                    value={fieldSEO.url as string}
+                    value={(fieldSEO.url as string) ?? ""}
                     onChange={(e) =>
                       setFieldSEO({ ...fieldSEO, url: e.target.value })
                     }
@@ -470,7 +474,7 @@ export function BlogForm() {
                 className="w-full border-gray-300 border px-4 py-1 rounded-md"
                 required
                 type="datetime-local"
-                value={blog.displayTime as string}
+                value={(blog.displayTime as string) ?? ""}
                 onChange={(e) =>
                   setBlog({ ...blog, displayTime: e.target.value })
                 }
@@ -486,7 +490,7 @@ export function BlogForm() {
                 type="text"
                 id="category"
                 placeholder="Người tạo"
-                value={blog?.blogCategory}
+                value={blog?.blogCategory ?? ""}
                 onChange={(e) =>
                   setBlog({ ...blog, blogCategory: e.target.value })
                 }
