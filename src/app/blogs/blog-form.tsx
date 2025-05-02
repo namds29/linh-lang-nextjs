@@ -122,7 +122,6 @@ export function BlogForm() {
 
   const handleDeleteImg = (index: number) => {
     const deletedFiles = listImg.files.filter((_, i) => i !== index);
-    console.log(deletedFiles);
     // if (isParams) {
     //   setBlog({
     //     ...product,
@@ -135,8 +134,6 @@ export function BlogForm() {
     });
   };
   const handleSaveForm = async () => {
-    console.log(blog?.displayTime);
-
     const params: ParamsBlog = {
       title: blog?.title,
       blogCategory: blog?.blogCategory,
@@ -157,7 +154,6 @@ export function BlogForm() {
       params.image = res.payload[0];
     }
     if (!isParams) {
-      console.log(params);
 
       const res = await blogsService.createBlog(params);
       if (res.status >= 200 && res.status < 400) {
@@ -176,7 +172,6 @@ export function BlogForm() {
         });
       }
     } else {
-      console.log(params);
       params.status = 1;
       const res = await blogsService.updateBlog({
         ...params,
@@ -208,7 +203,6 @@ export function BlogForm() {
     if (isParams) {
       const handleGetDetailBlog = async () => {
         const res: BlogPost = await blogsService.getDetailBlog(paramsUrl.id);
-        console.log(res);
 
         setBlog({
           ...blog,

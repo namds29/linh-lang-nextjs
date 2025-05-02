@@ -58,7 +58,6 @@ function Page() {
   });
   function onDragEnd(result: any) {
     // dropped outside the list
-    console.log(result);
     if (!result.destination) {
       return;
     }
@@ -68,7 +67,6 @@ function Page() {
       result.destination.index
     );
     setListImg(items);
-    console.log(items, "items");
   }
   const handleAddImage = (e: any) => {
     const listFile: File[] = Array.from(e.target.files);
@@ -81,13 +79,11 @@ function Page() {
         isAdded: true,
       };
     });
-    console.log(listUrlImg);
     setListImg([...listImg, ...listUrlImg]);
     setIsEdit(true);
   };
   const handleSave = async () => {
     if (isEdit) {
-      console.log("alo", listImg);
       const payload = listImg.map((item, index) => {
         return {
           id: item.id,
@@ -100,23 +96,18 @@ function Page() {
       const listImageAdded = payload.filter((item) => item.isAdded);
       const listFileAdded = listImageAdded.map((item) => item.imgFile);
       let listBannerUrl = [];
-      console.log(listFileAdded, "listFileAdded");
       if (listFileAdded.length > 0) {
         const res = await uploadImageService.uploadImage(
           FOLDER.BANNERS,
           listFileAdded
         );
-        console.log(res);
         listBannerUrl = res.payload;
         // params.image = res.payload[0];
       }
       for (const img of listBannerUrl) {
-        console.log(img);
         try {
           const res = await bannersService.addBanners({ imageUrl: img });
-          console.log(res);
         } catch (error) {
-          console.log(error);
         }
       }
 
@@ -126,14 +117,9 @@ function Page() {
             imageUrl: item.imgUrl,
             orderIndex: item.orderIndex,
           });
-          console.log(res);
         } catch (error) {
-          console.log(error);
         }
       }
-      console.log(listBannerUrl, "listBannerUrl");
-
-      console.log(payload, "1231231");
     }
     setIsEdit(!isEdit);
   };
@@ -142,14 +128,12 @@ function Page() {
       await bannersService.deleteBanners(id);
       fetchListBanner();
     } catch (error) {
-      console.log(error);
     }
   };
   const fetchListBanner = async () => {
     const res = await bannersService.fetchBanners();
     const sortRes = res.content.sort((a: any, b: any) => a.orderIndex - b.orderIndex);
     setListImg(sortRes);
-    console.log(res.content);
   };
   useEffect(() => {
     fetchListBanner();

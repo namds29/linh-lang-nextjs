@@ -36,7 +36,6 @@ const fetchAPI = async <T>(
 
   try {
     const response = await fetch(`${endpoint}`, options);
-    console.log(response, 'res')
     if(response.status === 403){
       const newToken = await authService.refreshToken();
       if (newToken) {
@@ -44,7 +43,6 @@ const fetchAPI = async <T>(
         options.headers["Authorization"] = `Bearer ${newToken}`;
         const refreshResponse = await fetch(endpoint, options);
         const responseData = await refreshResponse.json();
-        console.log(refreshResponse, 'refresh');
         return {
           data: responseData,
           status: refreshResponse.status,

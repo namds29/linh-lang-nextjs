@@ -24,7 +24,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathName = usePathname();
-  console.log(pathName);
   return (
     <html lang="en">
       <body
