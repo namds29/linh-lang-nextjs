@@ -1,13 +1,25 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 const Header = () => {
+  const [username, setUsername] = useState("");
+  const handleLogout = () => {
+    localStorage.clear();
+    redirect("/login");
+  };
+  useEffect(() => {
+    localStorage.getItem("sub") &&
+      setUsername(localStorage.getItem("sub") || "");
+  }, []);
   return (
     <header className="w-full h-[60px] p-2 flex justify-between items-center border-b fixed">
       <section id="header-toggle-slide">
@@ -26,18 +38,17 @@ const Header = () => {
 
         <DropdownMenu>
           <DropdownMenuTrigger className="border px-3 flex gap-3 rounded items-center py-1">
-            MomoLand Toys - Vùng đất đồ chơi
+            {username}
             <span className="w-[1.9rem] h-[1.9rem] leading-[30px] bg-red-400 rounded-3xl">
-              M
+              {username[0]}
             </span>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleLogout()}>
+              Logout
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </section>

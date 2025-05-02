@@ -30,9 +30,13 @@ const deleteProduct = async (productId: string): Promise<void> => {
 const createProduct = async <T>(product: ProductDetail): Promise<any> => {
   try {
     const res = await api.post(`${API_URL}${API_ENDPOINTS.PRODUCT}`, product);
+    console.log(res)
+    console.log(res.status)
     return res;
-  } catch (error) {
-    return { message: error, status: 400 };
+  } catch (error: any) {
+    const statusCode = Number(error.message)
+    
+    return { message: error, status: statusCode };
   }
 };
 const createImagesProduct = async (
