@@ -1,4 +1,5 @@
 import authService from "@/services/auth.service";
+import { redirect } from "next/navigation";
 
 export interface RequestData {
   [key: string]: any;
@@ -64,7 +65,7 @@ const fetchAPI = async <T>(
     if (error.message === '401' || error.message === '403') {
       console.error('Session expired or unauthorized. Logging out...');
       localStorage.clear(); // Clear the token
-      window.location.href = '/login'; // Redirect to login page
+      redirect('/login'); // Redirect to login page
     }
     throw error;
   }

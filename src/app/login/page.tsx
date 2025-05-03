@@ -4,16 +4,12 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Metadata } from "next";
 import { useState } from "react";
 import authService from "@/services/auth.service";
 import { jwtDecode } from "jwt-decode";
 import { redirect } from "next/navigation";
 
-export default function LoginPage({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export default function LoginPage() {
   const [payload, setPayload] = useState({ username: "", password: "" });
   const onSubmit = async () => {
     console.log(payload);
@@ -40,7 +36,7 @@ export default function LoginPage({
         "container-fluid h-[100vh] bg-muted dark:bg-background flex flex-1 flex-col items-center justify-center gap-16 p-6 md:p-10"
       )}
     >
-      <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <div className={cn("flex flex-col gap-6")}>
         <Card className="overflow-hidden p-0">
           <CardContent className="grid p-0 md:grid-cols-2">
             <div className="p-6 md:p-8">
