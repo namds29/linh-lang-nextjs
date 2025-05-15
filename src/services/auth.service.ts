@@ -53,4 +53,9 @@ const refreshToken = async () => {
       return null;
     }
   };
-export default { login, refreshToken };
+  const getToken = (): string | null => {
+    console.log("token", localStorage.getItem("accessToken"));
+  
+    return localStorage.getItem("accessToken"); // Replace 'jwt_token' with your actual key
+  };
+export default { login, refreshToken, getToken };

@@ -84,7 +84,6 @@ export function BlogForm() {
   }
   const editContentState = (value: any) => {
     setContent(value);
-    setFieldSEO({ ...fieldSEO, description: removeHtmlTags(value) });
     // setBlog({ ...product, description: value });
   };
   const editQuoteState = (value: any) => {
@@ -154,7 +153,6 @@ export function BlogForm() {
       params.image = res.payload[0];
     }
     if (!isParams) {
-
       const res = await blogsService.createBlog(params);
       if (res.status >= 200 && res.status < 400) {
         toast({
@@ -203,6 +201,7 @@ export function BlogForm() {
     if (isParams) {
       const handleGetDetailBlog = async () => {
         const res: BlogPost = await blogsService.getDetailBlog(paramsUrl.id);
+        console.log(res);
 
         setBlog({
           ...blog,
@@ -382,7 +381,19 @@ export function BlogForm() {
                   <label className="text-sm font-bold" htmlFor="description">
                     Trích dẫn
                   </label>
-                  <TextEditor content={quote} editContent={editQuoteState} />
+                  <div>
+                    <input
+                      className="border w-full p-2 rounded-md"
+                      type="text"
+                      onChange={(e) => {
+                        setQuote(e.target.value);
+                        setFieldSEO({
+                          ...fieldSEO,
+                          description: e.target.value,
+                        });
+                      }}
+                    />
+                  </div>
                 </section>
 
                 <section className="mt-6">

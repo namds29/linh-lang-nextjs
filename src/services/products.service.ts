@@ -2,6 +2,8 @@ import { api } from "@/lib/api.config";
 import Product, { Category, ProductDetail } from "@/lib/types/products.type";
 import { API_ENDPOINTS, API_URL } from "@/lib/routes/api";
 import { redirect } from "next/navigation";
+import authService from "./auth.service";
+
 const fetchProduct = async () => {
     // const res = await fetch(API_URL + API_ENDPOINTS.PRODUCT);
     const res = await api.get<Product[]>(`${API_URL}${API_ENDPOINTS.PRODUCT}`);
@@ -23,7 +25,11 @@ const fetchCategories = async (): Promise<Category[]> => {
   return listCategory;
 };
 const deleteProduct = async (productId: string): Promise<void> => {
-  const res = await api.delete(`${API_URL}${API_ENDPOINTS.PRODUCT}/${productId}`);
+  const res = await api.delete(`${API_URL}${API_ENDPOINTS.PRODUCT}/${productId}`,{
+    headers:{
+      'Authorization': `Bearer ${authService.getToken()}`
+    }
+  });
   if (res.status === 200) redirect("/products");
 };
 
@@ -52,6 +58,9 @@ const createImagesProduct = async (
       method: "POST",
       body: formData,
       redirect: "follow",
+      headers:{
+        'Authorization': `Bearer ${authService.getToken()}`
+      }
     };
     const res = await fetch(
       `${API_URL}${API_ENDPOINTS.PRODUCT}/${productId}/images`,

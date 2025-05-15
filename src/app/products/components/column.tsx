@@ -54,9 +54,12 @@ export const columns: ColumnDef<any>[] = [
           <HoverCardContent>
             <div className="h-[220px] w-[220px]">
               <img
-                className="w-full h-full object-fill"
+                className={`w-full h-full object-cover ${row.original.image.includes("null") ? "filter grayscale" : ""}`}
                 alt="Description of the image"
                 src={row.original.image}
+                onError={(e) => {
+                  e.currentTarget.src = "icon/error-img.png";
+                }}
               />
             </div>
           </HoverCardContent>

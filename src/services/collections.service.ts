@@ -1,6 +1,7 @@
 import { api } from "@/lib/api.config";
 import { API_ENDPOINTS, API_URL } from "@/lib/routes/api";
 import { redirect } from "next/navigation";
+import authService from "./auth.service";
 const fetchCollection = async () => {
   if (API_URL) {
     const res = await api.get<any[]>(`${API_URL}${API_ENDPOINTS.COLLECTIONS}`);
@@ -11,13 +12,25 @@ const fetchCollection = async () => {
 };
 
 const deleteCollection = async (collectionId: string): Promise<void> => {
-  const res = await api.delete(`${API_URL}${API_ENDPOINTS.COLLECTIONS}/${collectionId}`);
+  const res = await api.delete(
+    `${API_URL}${API_ENDPOINTS.COLLECTIONS}/${collectionId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}`,
+      },
+    }
+  );
   if (res.status === 200) redirect("/products/collections");
 };
 
-const createCollection = async <T>(collection: ParamsCollections): Promise<any> => {
+const createCollection = async <T>(
+  collection: ParamsCollections
+): Promise<any> => {
   try {
-    const res = await api.post(`${API_URL}${API_ENDPOINTS.COLLECTIONS}`, collection);
+    const res = await api.post(
+      `${API_URL}${API_ENDPOINTS.COLLECTIONS}`,
+      collection
+    );
     return res;
   } catch (error) {
     return { message: error, status: 400 };
@@ -36,6 +49,9 @@ const createImagesCollection = async (
       method: "POST",
       body: formData,
       redirect: "follow",
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}`,
+      },
     };
     const res = await fetch(
       `${API_URL}${API_ENDPOINTS.PRODUCT}/${collectionId}/images`,
@@ -47,19 +63,29 @@ const createImagesCollection = async (
   }
 };
 
-const getDetailCollection = async (collectionId: string): Promise<CollectionDetail> => {
-  const res = await api.get(API_URL + API_ENDPOINTS.COLLECTIONS + "/" + collectionId);
+const getDetailCollection = async (
+  collectionId: string
+): Promise<CollectionDetail> => {
+  const res = await api.get(
+    API_URL + API_ENDPOINTS.COLLECTIONS + "/" + collectionId
+  );
   return res.data.payload as CollectionDetail;
 };
-const updateCollection = async (collectionId: string, body: any): Promise<any> =>{
-  const res = await api.put(`${API_URL +API_ENDPOINTS.COLLECTIONS}/${collectionId}`, body)
-  return res
-}
+const updateCollection = async (
+  collectionId: string,
+  body: any
+): Promise<any> => {
+  const res = await api.put(
+    `${API_URL + API_ENDPOINTS.COLLECTIONS}/${collectionId}`,
+    body
+  );
+  return res;
+};
 export default {
   fetchCollection,
   deleteCollection,
   createCollection,
   createImagesCollection,
   getDetailCollection,
-  updateCollection
+  updateCollection,
 };

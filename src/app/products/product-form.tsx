@@ -323,7 +323,7 @@ export function ProductForm() {
       <div className="text-2xl font-bold text-red-400">
         {isParams ? "Sửa sản phẩm" : "Tạo sản phẩm"}
       </div>
-      <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8 min-h-[70vh] rounded-md">
+      <section className="py-4 px-6 shadow-inner bg-white box-shadow-style mt-8  rounded-md">
         <p className="font-bold">Thông tin chung</p>
         <Separator />
         <div className="mt-4 w-full">
@@ -406,7 +406,20 @@ export function ProductForm() {
             <label className="text-sm" htmlFor="description">
               Mô tả sản phẩm
             </label>
-            <TextEditor content={value} editContent={editContentState} />
+            <div>
+              <Input
+                placeholder="Nhập mô tả sản phẩm"
+                type="text"
+                className=""
+                value={product?.description}
+                onChange={(e) => {
+                  setProduct({ ...product, description: e.target.value });
+                  setFieldSEO({ ...fieldSEO, description: e.target.value });
+                }}
+              />
+            </div>
+
+            {/* <TextEditor content={value} editContent={editContentState} /> */}
           </section>
         </div>
       </section>

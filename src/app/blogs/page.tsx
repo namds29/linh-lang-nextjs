@@ -13,6 +13,8 @@ export default function Page() {
   useEffect(() => {
     const handleFetchBlog = async () => {
       const res: any = await blogsService.fetchBlog({page: 0, limit: 10});
+      console.log(res);
+      
       setData(res.content);
     }
     handleFetchBlog()

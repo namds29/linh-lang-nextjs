@@ -170,7 +170,7 @@ function Page() {
             </div>
           </div>
         </CardTitle>
-        <CardContent className="mt-6 gap-6 overflow-x-auto">
+        <CardContent className="mt-6 gap-6 overflow-x-auto flex">
           {!isEdit &&
             listImg.map((item, index) => (
               <div key={item.id + index}>
@@ -192,12 +192,13 @@ function Page() {
                 isCombineEnabled={false}
                 ignoreContainerClipping={false}
                 droppableId={generateUniqueId()}
-                direction="vertical"
+                direction="horizontal"
               >
                 {(provided, snapshot) => (
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
+                    className="flex overflow-auto"
                     style={getListStyle(snapshot.isDraggingOver)}
                   >
                     {listImg.map((item, index) => (
@@ -217,7 +218,7 @@ function Page() {
                                 provided.draggableProps.style
                               )}
                             >
-                              <div className="mt-4 bg-gray-300 h-[500px] w-full relative">
+                              <div className="mt-4 bg-gray-300 h-[300px] w-full relative">
                                 <button
                                   className=" rounded p-1 absolute top-2 right-2 bg-red-500"
                                   onClick={() => handleDelete(item.id)}
