@@ -25,11 +25,7 @@ const fetchCategories = async (): Promise<Category[]> => {
   return listCategory;
 };
 const deleteProduct = async (productId: string): Promise<void> => {
-  const res = await api.delete(`${API_URL}${API_ENDPOINTS.PRODUCT}/${productId}`,{
-    headers:{
-      'Authorization': `Bearer ${authService.getToken()}`
-    }
-  });
+  const res = await api.delete(`${API_URL}${API_ENDPOINTS.PRODUCT}/${productId}`);
   if (res.status === 200) redirect("/products");
 };
 
