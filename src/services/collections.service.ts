@@ -13,12 +13,7 @@ const fetchCollection = async () => {
 
 const deleteCollection = async (collectionId: string): Promise<void> => {
   const res = await api.delete(
-    `${API_URL}${API_ENDPOINTS.COLLECTIONS}/${collectionId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${authService.getToken()}`,
-      },
-    }
+    `${API_URL}${API_ENDPOINTS.COLLECTIONS}/${collectionId}`
   );
   if (res.status === 200) redirect("/products/collections");
 };
