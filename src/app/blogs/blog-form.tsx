@@ -71,7 +71,7 @@ export function BlogForm() {
   const [fieldSEO, setFieldSEO] = useState<SEO>({
     titlePage: "",
     description: "",
-    url: "toy.linhlang.vn/",
+    url: "linhlang.vn/",
   });
   // const [isMultiUnit, setIsMultiUnit] = useState<boolean>(false);
   const [toggleSEO, setToggleSEO] = useState<boolean>(false);
@@ -263,7 +263,7 @@ export function BlogForm() {
                       setFieldSEO({
                         ...fieldSEO,
                         titlePage: e.target.value,
-                        url: "toy.linhlang.vn/" + convertToSlug(e.target.value),
+                        url: "linhlang.vn/" + convertToSlug(e.target.value),
                       });
                     }}
                   />
