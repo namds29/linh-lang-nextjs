@@ -27,7 +27,7 @@ const fetchAPI = async <T>(
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": token ? `Bearer ${token}` : undefined,
+      Authorization: token ? `Bearer ${token}` : undefined,
     },
   };
 
@@ -37,17 +37,22 @@ const fetchAPI = async <T>(
 
   try {
     const response = await fetch(`${endpoint}`, options);
-    if(response.status === 403){
-      const newToken = await authService.refreshToken();
-      if (newToken) {
-        // Retry the original request with the new token
-        options.headers["Authorization"] = `Bearer ${newToken}`;
-        const refreshResponse = await fetch(endpoint, options);
-        const responseData = await refreshResponse.json();
-        return {
-          data: responseData,
-          status: refreshResponse.status,
-        };
+    if (response.status === 403) {
+      try {
+        const newToken = await authService.refreshToken();
+        if (newToken) {
+          // Retry the original request with the new token
+          options.headers["Authorization"] = `Bearer ${newToken}`;
+          const refreshResponse = await fetch(endpoint, options);
+          const responseData = await refreshResponse.json();
+          return {
+            data: responseData,
+            status: refreshResponse.status,
+          };
+        }
+      } catch (error) {
+        localStorage.clear(); // Clear the token
+        redirect("/login"); // Redirect to login page
       }
     }
     // options.next = { tags: tag };
@@ -62,10 +67,10 @@ const fetchAPI = async <T>(
     };
   } catch (error: any) {
     console.error("Fetch error:", error);
-    if (error.message === '401' || error.message === '403') {
-      console.error('Session expired or unauthorized. Logging out...');
+    if (error.message === "401" || error.message === "403") {
+      console.error("Session expired or unauthorized. Logging out...");
       localStorage.clear(); // Clear the token
-      redirect('/login'); // Redirect to login page
+      redirect("/login"); // Redirect to login page
     }
     throw error;
   }

@@ -77,6 +77,7 @@ const generateUniqueId = () => {
 };
 export function ProductForm() {
   const [value, setValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [listImg, setListImg] = useState<{ files: File[]; urls: string[] }>({
     files: [],
     urls: [],
@@ -144,22 +145,25 @@ export function ProductForm() {
       setListImg({ files: listFile, urls: listUrlImg });
     }
   };
-  const handleEachFileChange = (e: any, index: number) => {
+  const handleEachFileChange = (e: any, index: number, url: string) => {
     const file = e.target.files[0];
 
     if (file) {
       const newUrl = URL.createObjectURL(file);
       const newFiles = [...listImg.files];
-      newFiles[index] = file;
+      newFiles.push(file);
       const newUrls = [...listImg.urls];
       newUrls[index] = newUrl;
+
       setListImg({
         files: newFiles,
         urls: newUrls,
       });
       setProduct({
         ...product,
-        imgFile: product.imgFile.filter((_: any, i: number) => i !== index),
+        imgFile: product.imgFile.filter(
+          (item: any, i: number) => item.url !== url
+        ),
       });
     }
   };
@@ -180,7 +184,6 @@ export function ProductForm() {
   };
   const convertSize = (size: string) => {
     const value = size.split("x");
-    console.log(value);
     setSize({ width: value[1], height: value[0] });
   };
   const handleSaveForm = async () => {
@@ -210,10 +213,13 @@ export function ProductForm() {
     };
 
     if (!isParams) {
+      setIsLoading(true);
       const res = await productsService.createProduct(params);
+
       console.log(res.status);
 
       if ((res.status >= 200 && res.status < 400) || res.status === 403) {
+        setIsLoading(false);
         toast({
           variant: "success",
           title: `Tạo thành công!`,
@@ -229,7 +235,7 @@ export function ProductForm() {
         redirect("/products");
       } else if (res.status !== 403 && res.status < 200 && res.status > 400) {
         console.log(res.status);
-
+        setIsLoading(false);
         toast({
           variant: "destructive",
           title: "Tạo thất bại!",
@@ -237,15 +243,18 @@ export function ProductForm() {
         });
       }
     } else {
+      setIsLoading(true);
       // if (listImg.files.length > 0) params.images = listImg.files;
       const res = await productsService.updateProduct(paramsUrl.id, params);
-
+      setIsLoading(false);
       if (res.status >= 200 && res.status < 400) {
         toast({
           variant: "success",
           title: `Sửa thành công!`,
           description: `${product.name} has been added successfully!`,
         });
+        console.log(listImg.files, "listImg.files");
+
         if (listImg.files.length > 0) {
           const data = await productsService.createImagesProduct(
             res.data.payload,
@@ -530,7 +539,7 @@ export function ProductForm() {
                                 id={`file-upload-${index}`}
                                 accept="image/*"
                                 onChange={(event) =>
-                                  handleEachFileChange(event, index)
+                                  handleEachFileChange(event, index, item)
                                 }
                                 style={{ display: "none" }} // Hide the default file input
                               />
@@ -719,7 +728,7 @@ export function ProductForm() {
         )}
       </section>
       <div className=" flex justify-end">
-        <Button className="my-4" onClick={handleSaveForm}>
+        <Button className="my-4" disabled={isLoading} onClick={handleSaveForm}>
           Lưu
         </Button>
       </div>

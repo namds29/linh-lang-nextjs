@@ -62,6 +62,7 @@ const defaultBlog: ParamsBlog = {
 };
 export function BlogForm() {
   const [content, setContent] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [quote, setQuote] = useState("");
   const [listImg, setListImg] = useState<{ files: File[]; urls: string[] }>({
     files: [],
@@ -153,7 +154,9 @@ export function BlogForm() {
       params.image = res.payload[0];
     }
     if (!isParams) {
+      setIsLoading(true);
       const res = await blogsService.createBlog(params);
+      setIsLoading(false);
       if (res.status >= 200 && res.status < 400) {
         toast({
           variant: "success",
@@ -171,10 +174,12 @@ export function BlogForm() {
       }
     } else {
       params.status = 1;
+      setIsLoading(true);
       const res = await blogsService.updateBlog({
         ...params,
         id: paramsUrl.id,
       });
+      setIsLoading(false);
       if (res.status >= 200 && res.status < 400) {
         toast({
           variant: "success",
@@ -467,7 +472,7 @@ export function BlogForm() {
               )}
             </section>
             <div className=" flex justify-end">
-              <Button className="my-4" onClick={handleSaveForm}>
+              <Button className="my-4" disabled={isLoading} onClick={handleSaveForm}>
                 Lưu
               </Button>
             </div>
